@@ -1,16 +1,142 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+	/* Chrome, Safari and Opera */
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	.no-scrollbar {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 * {
-  box-sizing: border-box;
+	font-family: "Quicksand";
+}
+:root {
+	--main: rgb(31, 41, 55);
+}
+body {
+	background: rgba(var(--main), 0.5); /* gray-800 */ /* #1f2937 */
+	/* background: rgba(31, 41, 55, 0.5); */
+	background: var(--main);
+	/* background: #14181c; */
+	color: #ffffff;
+	font-family: "Nunito";
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+}
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+::-webkit-scrollbar {
+	width: 16px;
+	height: 16px;
+}
+::-webkit-scrollbar-thumb {
+	background: white;
+	border-radius: 8px;
+	border: 4px solid transparent;
+	background-clip: padding-box;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+/* ::-webkit-scrollbar-thumb {
+	background-color: gray;
+	border: 4px solid transparent;
+	border-radius: 8px;
+	background-clip: padding-box;
+}
+
+::-webkit-scrollbar {
+	width: 16px;
+} */
+/* Position and sizing of burger button */
+/* .bm-burger-button {
+	position: fixed;
+	width: 20px;
+	height: 20px;
+	right: 30px;
+	top: 30px;
+} */
+.banner::before {
+	/* --main: rgb(31, 41, 55); */
+	background-image: linear-gradient(
+			90deg,
+			var(--main) 0,
+			rgba(31, 41, 55, 0.986) 0.97%,
+			rgba(31, 41, 55, 0.945) 2.07833333%,
+			rgba(31, 41, 55, 0.883) 3.29666667%,
+			rgba(31, 41, 55, 0.803) 4.60166667%,
+			rgba(31, 41, 55, 0.711) 5.96666667%,
+			rgba(31, 41, 55, 0.61) 7.365%,
+			rgba(31, 41, 55, 0.504) 8.77166667%,
+			rgba(31, 41, 55, 0.398) 10.16%,
+			rgba(31, 41, 55, 0.296) 11.505%,
+			rgba(31, 41, 55, 0.203) 12.78%,
+			rgba(31, 41, 55, 0.122) 13.95833333%,
+			rgba(31, 41, 55, 0.059) 15.01666667%,
+			rgba(31, 41, 55, 0.016) 15.92833333%,
+			rgba(31, 41, 55, 0) 16.66666666%,
+			rgba(31, 41, 55, 0) 83.33333333%,
+			rgba(31, 41, 55, 0.016) 84.07166667%,
+			rgba(31, 41, 55, 0.059) 84.98333333%,
+			rgba(31, 41, 55, 0.122) 86.04166667%,
+			rgba(31, 41, 55, 0.203) 87.22%,
+			rgba(31, 41, 55, 0.296) 88.495%,
+			rgba(31, 41, 55, 0.398) 89.84%,
+			rgba(31, 41, 55, 0.504) 91.22833333%,
+			rgba(31, 41, 55, 0.611) 92.635%,
+			rgba(31, 41, 55, 0.711) 94.03333333%,
+			rgba(31, 41, 55, 0.803) 95.39833333%,
+			rgba(31, 41, 55, 0.883) 96.70333333%,
+			rgba(31, 41, 55, 0.945) 97.92166667%,
+			rgba(31, 41, 55, 0.986) 99.03%,
+			#1f2937
+		),
+		linear-gradient(
+			0deg,
+			#1f2937 0,
+			#1f2937 7.48148148%,
+			rgba(31, 41, 55, 0.986) 9.63703704%,
+			rgba(31, 41, 55, 0.945) 12.100000000000001%,
+			rgba(31, 41, 55, 0.883) 14.80740741%,
+			rgba(31, 41, 55, 0.803) 17.70740741%,
+			rgba(31, 41, 55, 0.711) 20.74074074%,
+			rgba(31, 41, 55, 0.611) 23.84814815%,
+			rgba(31, 41, 55, 0.504) 26.97407407%,
+			rgba(31, 41, 55, 0.398) 30.059259259999997%,
+			rgba(31, 41, 55, 0.296) 33.04814815%,
+			rgba(31, 41, 55, 0.203) 35.88148148%,
+			rgba(31, 41, 55, 0.122) 38.5%,
+			rgba(31, 41, 55, 0.059) 40.85185185%,
+			rgba(31, 41, 55, 0.016) 42.87777778%,
+			rgba(31, 41, 55, 0) 44.51851852%
+		);
+	background-repeat: no-repeat;
+	content: "";
+	display: absolute;
+	height: 100%;
+	/* left: 50%; */
+	/* background-image: radial-gradient(
+		circle at 50% 33%,
+		rgba(253, 94, 247, 0.1) 8.8%,
+		rgb(31, 41, 55) 73%
+	); */
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+	/* transform: translateX(-50%); */
+	width: 100%;
+	z-index: 10;
+	/* border: 1px solid white; */
 }
