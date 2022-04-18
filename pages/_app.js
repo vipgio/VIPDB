@@ -1,15 +1,18 @@
 import "../styles/globals.css";
 import Layout from "../components/Layout";
-import { UserProvider } from "@auth0/nextjs-auth0";
+import TitleContextProvider from "../context/TitleContext";
+import UserContextProvider from "../context/UserContext";
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <UserProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </UserProvider>
-  );
+	return (
+		<UserContextProvider>
+			<Layout>
+				<TitleContextProvider>
+					<Component {...pageProps} />
+				</TitleContextProvider>
+			</Layout>
+		</UserContextProvider>
+	);
 }
 
 export default MyApp;

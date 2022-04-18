@@ -13,6 +13,7 @@ const credtis = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [is404, setIs404] = useState(false);
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
+	console.log("currentTitle ", currentTitle);
 	// useEffect(() => {
 	// 	console.log("id: ", query.id);
 	// }, [query]);
@@ -22,16 +23,17 @@ const credtis = () => {
 		} else if (query.id) {
 			const options = {
 				method: "GET",
-				url: `https://api.themoviedb.org/3/movie/${
+				url: `https://api.themoviedb.org/3/tv/${
 					query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
 						? query.id
 						: query.id.slice(0, query.id.search(/[-]/g))
 				}?api_key=${
 					process.env.TMDB_KEY
-				}&append_to_response=credits,videos,release_dates`,
+				}&append_to_response=aggregate_credits,release_dates`,
 			};
 			try {
 				const data = await axios.request(options);
+				// console.log(data.data);
 				setCurrentTitle(data.data);
 			} catch (error) {
 				console.log("credits error ", error);
@@ -44,19 +46,19 @@ const credtis = () => {
 	) : (
 		<>
 			<Meta
-				title={`${currentTitle.title} (${currentTitle.release_date.slice(
+				title={`${currentTitle.name} (${currentTitle.first_air_date.slice(
 					0,
 					4
 				)}) - Credits | `}
 			/>
 			<div className='my-2'>
-				<Link href={`/movie/${query.id}`}>
+				<Link href={`/tv/${query.id}`}>
 					<a>&larr; Back</a>
 				</Link>
 			</div>
 			<section className='grid grid-cols-2'>
 				<div>
-					{currentTitle.credits.cast.map((person) => (
+					{currentTitle.aggregate_credits.cast.map((person) => (
 						<div key={person.id} className='shaodw-xl m-2 flex h-fit border p-2'>
 							<div className='mr-2 overflow-hidden rounded-md text-[0px]'>
 								<Link href={`/person/${person.id}`}>
@@ -84,13 +86,13 @@ const credtis = () => {
 										<a>{person.name}</a>
 									</Link>
 								</div>
-								<div className='text-sm text-slate-200'>{person.character}</div>
+								<div className='text-sm text-slate-200'>{person.roles[0].character}</div>
 							</div>
 						</div>
 					))}
 				</div>
 				<div>
-					{currentTitle.credits.crew
+					{currentTitle.aggregate_credits.crew
 						.filter((value, index, self) => {
 							return (
 								self.findIndex(

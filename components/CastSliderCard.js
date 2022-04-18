@@ -3,8 +3,10 @@ import Link from "next/link";
 import blankImage from "./nullPic.jpg";
 const CastSliderCard = ({ person }) => {
 	return (
-		<div className='mx-2 min-w-[120px] overflow-auto rounded-md shadow-2xl'>
-			<Link href={`/person/${person.id}`}>
+		<div className='mx-2 min-w-[120px] snap-center overflow-auto rounded-md shadow-2xl'>
+			<Link
+				href={`/person/${person.id}-${person.name.toLowerCase().replace(/[ ]/g, "-")}`}
+			>
 				<a>
 					<div className='relative h-[180px] w-[120px]'>
 						<Image
@@ -19,7 +21,6 @@ const CastSliderCard = ({ person }) => {
 							blurDataURL={
 								person.profile_path
 									? // ? `https://www.themoviedb.org/t/p/w94_and_h141_bestv2${person.profile_path}`
-									  //   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNsaOCpBwAEIQGNgcT93QAAAABJRU5ErkJggg=="
 									  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkrAcAAIcAgit25/8AAAAASUVORK5CYII="
 									: blankImage
 							}
@@ -33,10 +34,23 @@ const CastSliderCard = ({ person }) => {
 				</a>
 			</Link>
 			<div className='m-2 flex flex-col'>
-				<Link href={`/person/${person.id}`}>
-					<a className='font-extrabold text-white'>{person.name}</a>
+				<Link
+					href={`/person/${person.id}-${person.name.toLowerCase().replace(/[ ]/g, "-")}`}
+				>
+					<a className='link font-extrabold text-slate-200'>{person.name}</a>
 				</Link>
-				<div>as {person.character}</div>
+				{person.character ? (
+					<span className='text-sm font-light text-slate-200'>{person.character}</span>
+				) : (
+					<>
+						<span className='text-sm font-light text-slate-200'>
+							{person.roles[0].character}
+						</span>
+						<div className='text-sm text-slate-300'>
+							{person.total_episode_count} episodes
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);

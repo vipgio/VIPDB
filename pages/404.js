@@ -8,7 +8,7 @@ const NotFound = () => {
 			<div>
 				That page cannot be found. Return to the{" "}
 				<Link href='/'>
-					<a className='underline'>Homepage</a>
+					<a className='underline hover:text-sky-400'>Homepage</a>
 				</Link>
 			</div>
 		</>

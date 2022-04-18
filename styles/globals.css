@@ -14,12 +14,17 @@
 	}
 }
 
+.link {
+	@apply hover:text-sky-400;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 * {
 	font-family: "Quicksand";
 }
 :root {
 	--main: rgb(31, 41, 55);
+	--main: #1e293b;
 }
 body {
 	background: rgba(var(--main), 0.5); /* gray-800 */ /* #1f2937 */
@@ -69,7 +74,7 @@ html {
 	top: 30px;
 } */
 .banner::before {
-	/* --main: rgb(31, 41, 55); */
+	--main: rgb(31, 41, 55);
 	background-image: linear-gradient(
 			90deg,
 			var(--main) 0,
@@ -124,19 +129,179 @@ html {
 		);
 	background-repeat: no-repeat;
 	content: "";
-	display: absolute;
+	position: block;
 	height: 100%;
-	/* left: 50%; */
-	/* background-image: radial-gradient(
-		circle at 50% 33%,
-		rgba(253, 94, 247, 0.1) 8.8%,
-		rgb(31, 41, 55) 73%
-	); */
+	height: max(1080px, min(100vh, 100%));
 	pointer-events: none;
 	position: absolute;
-	top: 0;
-	/* transform: translateX(-50%); */
+	bottom: 0;
 	width: 100%;
 	z-index: 10;
+	/* transform: translateX(-40%);
+	left: 50%; */
 	/* border: 1px solid white; */
+}
+.banner {
+	/* height: min(1080px, 100vh); */
+	/* aspect-ratio: 16 / 9; */
+	/* transform: translateX(-60%);
+	left: 50%; */
+}
+/* .navbar-shadow {
+	background-color: transparent;
+	background-image: linear-gradient(
+		180deg,
+		#1f2937 0,
+		rgba(31, 41, 55, 0.945) 16.56%,
+		rgba(31, 41, 55, 0.802) 30.85%,
+		rgba(31, 41, 55, 0.606) 43.77%,
+		rgba(31, 41, 55, 0.394) 56.23%,
+		rgba(31, 41, 55, 0.198) 69.15%,
+		rgba(31, 41, 55, 0.055) 83.44%,
+		rgba(31, 41, 55, 0)
+	);
+	background-repeat: repeat-x;
+	height: 95px;
+	left: 0;
+	opacity: 0.7;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.navbar-shadow:hover {
+	background-color: transparent;
+	background-image: linear-gradient(
+		180deg,
+		#1f2937 0,
+		rgba(31, 41, 55, 0.945) 16.56%,
+		rgba(31, 41, 55, 0.802) 30.85%,
+		rgba(31, 41, 55, 0.606) 43.77%,
+		rgba(31, 41, 55, 0.394) 56.23%,
+		rgba(31, 41, 55, 0.198) 69.15%,
+		rgba(31, 41, 55, 0.055) 83.44%,
+		rgba(31, 41, 55, 0)
+	);
+	background-repeat: repeat-x;
+	height: 95px;
+	left: 0;
+	opacity: 0.1;
+	position: absolute;
+	right: 0;
+	top: 0;
+} */
+/* a {
+	position: relative;
+}
+a::after {
+	content: "";
+	width: 100%;
+	height: 1px;
+	background: white;
+	display: block;
+	margin: -3px auto;
+	position: absolute;
+
+	right: 0;
+	bottom: 0;
+	left: 0;
+	transform: scaleX(0);
+	transition: transform 250ms ease-in-out;
+}
+a:hover::after {
+	transform: scaleX(1);
+} */
+
+button {
+	background-color: transparent;
+	border: none;
+	outline: none;
+	cursor: pointer;
+}
+.on {
+	color: #000;
+}
+.off {
+	color: #ccc;
+}
+/*
+.my-button {
+	background: linear-gradient(to left, #38bdf8 50%, #0284c7 50%) right;
+	background-size: 200%;
+	transition: 0.5s ease-out;
+}
+.my-button:hover {
+	background-position: left;
+}
+*/
+.move-tl {
+	-webkit-animation: diagonal-tl 2s infinite;
+	-moz-animation: diagonal-tl 2s infinite;
+	-o-animation: diagonal-tl 2s infinite;
+	animation: diagonal-tl 1s;
+}
+.move-bl {
+	animation: diagonal-bl 1s;
+}
+.move-tr {
+	animation: diagonal-tr 1s;
+}
+.move-br {
+	animation: diagonal-br 1s;
+}
+
+/*@-webkit-keyframes diagonal {
+	0% {
+		transform: translatex(-30px) translatey(-30px);
+	}
+	50% {
+		transform: translatex(20px) translatey(20px);
+	}
+	100% {
+		transform: translatex(-30px) translatey(-30px);
+	}
+}
+
+@-moz-keyframes diagonal {
+	0% {
+		transform: translatex(-30px) translatey(-30px);
+	}
+	50% {
+		transform: translatex(20px) translatey(20px);
+	}
+	100% {
+		transform: translatex(-30px) translatey(-30px);
+	}
+}
+*/
+@keyframes diagonal-tl {
+	0% {
+		transform: translatex(-100%) translatey(-100%);
+	}
+	100% {
+		transform: translatex(0) translatey(0);
+	}
+}
+@keyframes diagonal-bl {
+	0% {
+		transform: translatex(-100%) translatey(100%);
+	}
+	100% {
+		transform: translatex(0) translatey(0);
+	}
+}
+@keyframes diagonal-tr {
+	0% {
+		transform: translatex(100%) translatey(-100%);
+	}
+	100% {
+		transform: translatex(0) translatey(0);
+	}
+}
+@keyframes diagonal-br {
+	0% {
+		transform: translatex(100%) translatey(100%);
+	}
+	100% {
+		transform: translatex(0) translatey(0);
+	}
 }

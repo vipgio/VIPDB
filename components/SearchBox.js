@@ -11,7 +11,7 @@ const SearchBox = () => {
 				onChange={(e) => {
 					setSearchQuery(e.target.value);
 				}}
-				className='w-[35px] rounded-full p-2 pr-8 text-gray-800 transition-all duration-700 ease-in-out hover:w-[250px] focus:w-[250px] focus:outline-blue-700'
+				className='w-[35px] rounded-full p-2 pr-8 text-slate-800 transition-all duration-700 ease-in-out hover:w-[250px] focus:w-[250px] focus:outline-sky-400'
 			/>
 
 			{searchQuery ? (

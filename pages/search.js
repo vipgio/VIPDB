@@ -43,7 +43,7 @@ const Search = () => {
 						type='text'
 						placeholder='Enter a movie, tv show, person...'
 						value={searchQuery}
-						className='mx-4 h-20 rounded-xl px-4 text-4xl text-gray-800 outline-blue-400 duration-300'
+						className='mx-4 h-20 rounded-xl px-4 text-4xl text-slate-800 outline-blue-400 duration-300'
 						onChange={(e) => {
 							setSearchQuery(e.target.value);
 							search(e.target.value);

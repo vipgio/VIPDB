@@ -5,9 +5,12 @@ import blankImage from "./nullPic.jpg";
 const SearchResult = ({ data }) => {
 	return (
 		<div className='flex justify-center'>
-			<div className='grid w-2/3 rounded-xl bg-gray-200 p-4 px-5'>
+			<div className='grid w-2/3 rounded-xl bg-slate-200 p-4 px-5'>
 				{data.results.slice(0, 5).map((res) => (
-					<div className='flex border-b border-gray-600 pt-2 text-gray-800' key={res.id}>
+					<div
+						className='flex border-b border-slate-600 pt-2 text-slate-800'
+						key={res.id}
+					>
 						<div className='min-w-fit'>
 							<Image
 								src={
@@ -33,7 +36,8 @@ const SearchResult = ({ data }) => {
 									<Link
 										href={`/movie/${res.id}-${res.title
 											.toLowerCase()
-											.replace(/[ ]/g, "-")}`}
+											.replace(/[ ]/g, "-")
+											.replace(/[,:;']/g, "")}`}
 									>
 										<a>
 											{res.title} ({res.release_date.slice(0, 4)})
