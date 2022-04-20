@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { BsPlayFill } from "react-icons/bs";
 import { IoCloseOutline } from "react-icons/io5";
-import { server } from "../pages/config";
 import { Dialog, Transition, Popover } from "@headlessui/react";
 import { Fragment, useState } from "react";
 

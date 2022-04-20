@@ -1,5 +1,5 @@
 import StarRating from "./StarRating";
-import { server } from "../pages/config";
+import { server } from "../HOC/config";
 import { useState, useRef } from "react";
 import { IoClipboard } from "react-icons/io5";
 import { useRouter } from "next/router";
@@ -29,7 +29,6 @@ const DetailsBox = () => {
 				<div className='flex max-w-sm items-center overflow-hidden'>
 					<input
 						type='text'
-						id=''
 						value={server + asPath}
 						readOnly
 						className={`transition-all duration-500 ${
