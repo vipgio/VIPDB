@@ -9,7 +9,7 @@ export const LogoutButton = () => {
 				<button
 					type='button'
 					onClick={handleLogout}
-					className='my-button ml-3 rounded-md bg-rose-600 py-2 px-4 text-slate-100 outline-rose-200 hover:bg-rose-400 focus:outline'
+					className='rounded-md bg-rose-600 py-2 px-4 text-slate-100 outline-rose-200 hover:bg-rose-400 focus:outline'
 				>
 					Logout
 				</button>

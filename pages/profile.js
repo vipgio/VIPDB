@@ -21,11 +21,11 @@ export default function Profile() {
 					{/* <div className='h-8 w-8 animate-spin rounded-full border-4 border-white border-t-gray-500'></div> */}
 					<div>
 						<h1 className='text-3xl font-bold'>Watchlist</h1>
-						<div className='grid grid-cols-5'>
+						<div className='grid grid-cols-3 sm:grid-cols-5'>
 							{currentUser.user_metadata.watchlist
 								.sort((a, b) => b.dateAdded.localeCompare(a.dateAdded))
 								.map((movie) => (
-									<div key={movie.id} className='m-1 overflow-hidden rounded-md lg:m-5'>
+									<div key={movie.id} className='m-2 overflow-hidden rounded-md lg:m-5'>
 										<div className='group relative text-[0]'>
 											<div className='absolute bottom-0 z-10 hidden h-[13%] w-full items-center bg-slate-500 bg-opacity-80 group-hover:flex'>
 												<Bookmark currentTitle={movie} />

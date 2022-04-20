@@ -40,7 +40,7 @@ export const Navbar = () => {
 			<div
 				className={`${
 					showBurger
-						? "no-scrollbar max-h-[165px] overflow-y-scroll"
+						? "no-scrollbar max-h-[300px] overflow-y-scroll"
 						: "h-0 overflow-hidden"
 					// showBurger ? "opacity-100" : "opacity-0"
 				} absolute top-3 right-0 z-10 flex-col rounded-xl bg-white transition-all duration-300 sm:hidden`}
@@ -88,12 +88,26 @@ export const Navbar = () => {
 							</a>
 						</Link>
 
-						{currentUser && (
-							<Link href='/profile'>
-								<a className='mb-2 text-slate-800' onClick={() => setShowBurger(false)}>
-									Profile
-								</a>
-							</Link>
+						{currentUser ? (
+							<>
+								<Link href='/profile'>
+									<a className='mb-2 text-slate-800' onClick={() => setShowBurger(false)}>
+										Profile
+									</a>
+								</Link>
+								<div className=''>
+									<LogoutButton />
+								</div>
+							</>
+						) : (
+							<div className='flex flex-col'>
+								<span>
+									<LoginButton />
+								</span>
+								<span className='mt-3'>
+									<RegisterButton text={"Register"} />
+								</span>
+							</div>
 						)}
 					</div>
 				</div>
@@ -129,34 +143,22 @@ export const Navbar = () => {
 
 						{/* <StarRating /> */}
 						{currentUser ? (
-							<div className='flex'>
+							<div className='mx-2 flex'>
 								<LogoutButton />
-								<button onClick={getUser}>Get Data</button>
-								<button onClick={getSession}>Get Session</button>
-								<button onClick={clearData}>Clear Data</button>
+								{/* <button onClick={getUser}>Get Data</button> */}
+								{/* <button onClick={getSession}>Get Session</button> */}
+								{/* <button onClick={clearData}>Clear Data</button> */}
 							</div>
 						) : (
 							<div className='flex'>
-								<LoginButton />
-								<RegisterButton />
+								<span className='ml-3'>
+									<LoginButton />
+								</span>
+								<span className='ml-3'>
+									<RegisterButton text={"Create an Account"} />
+								</span>
 							</div>
 						)}
-
-						{/*user ? (
-							<a
-								href='/api/auth/logout'
-								className='ml-3 bg-red-600 py-2 px-8 text-slate-100 outline-red-500 hover:bg-red-700 focus:outline focus:outline-4'
-							>
-								Logout
-							</a>
-						) : (
-							<a
-								href='/api/auth/login'
-								className='my-button ml-3 bg-sky-600 py-2 px-8 text-slate-100 outline-sky-200 hover:bg-sky-400 focus:outline'
-							>
-								Login
-							</a>
-						)*/}
 					</div>
 					<div className='ml-auto'>
 						<SearchBox />

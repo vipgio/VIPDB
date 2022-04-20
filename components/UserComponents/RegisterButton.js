@@ -2,7 +2,8 @@ import { Fragment, useContext, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import RegisterModal from "./RegisterModal";
 import { UserContext } from "../../context/UserContext";
-export const RegisterButton = () => {
+export const RegisterButton = ({ text }) => {
+	console.log(text);
 	let [isOpen, setIsOpen] = useState(false);
 	const closeModal = () => setIsOpen(false);
 	const openModal = () => setIsOpen(true);
@@ -14,9 +15,9 @@ export const RegisterButton = () => {
 				<button
 					type='button'
 					onClick={openModal}
-					className='my-button ml-3 rounded-md bg-green-600 py-2 px-4 text-slate-100 outline-green-200 hover:bg-green-400 focus:outline'
+					className='rounded-md bg-green-600 py-2 px-4 text-slate-100 outline-green-200 hover:bg-green-400 focus:outline'
 				>
-					Create an Account
+					{text}
 				</button>
 			</div>
 
