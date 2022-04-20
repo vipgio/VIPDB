@@ -28,7 +28,16 @@ const SearchResult = ({ data }) => {
 						<div className='px-2'>
 							{res.media_type === "person" ? (
 								<>
-									<div>{res.name}</div>
+									<Link
+										href={`/person/${res.id}-${res.name
+											.toLowerCase()
+											.replace(/[ ]/g, "-")
+											.replace(/[,:;']/g, "")}`}
+									>
+										<a>
+											<div>{res.name}</div>
+										</a>
+									</Link>
 									<div>Actor</div>
 								</>
 							) : res.media_type === "movie" ? (
@@ -51,9 +60,16 @@ const SearchResult = ({ data }) => {
 								</>
 							) : (
 								<>
-									<div>
-										{res.name} ({res.first_air_date.slice(0, 4)}-)
-									</div>
+									<Link
+										href={`/tv/${res.id}-${res.name
+											.toLowerCase()
+											.replace(/[ ]/g, "-")
+											.replace(/[,:;']/g, "")}`}
+									>
+										<a>
+											{res.name} ({res.first_air_date.slice(0, 4)}-)
+										</a>
+									</Link>
 									<div className='text-blue-600'>
 										{res.vote_average} / 10 FROM {res.vote_count} VOTES
 									</div>

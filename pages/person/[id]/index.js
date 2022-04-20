@@ -1,4 +1,3 @@
-import { useUser } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -15,7 +14,6 @@ import NotFound from "../../404";
 const axios = require("axios").default;
 
 const Person = () => {
-	const { user } = useUser();
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(true);
 	const [is404, setIs404] = useState(false);

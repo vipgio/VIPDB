@@ -4,9 +4,10 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 const Bookmark = ({ currentTitle }) => {
 	const { currentUser, addData } = useContext(UserContext);
+	console.log(currentTitle);
 	return (
 		<>
-			<div className='mt-2 grid w-full grid-cols-3 justify-evenly'>
+			<div className='grid w-full grid-cols-3 justify-evenly'>
 				<div>
 					{currentUser.user_metadata.seen.some(
 						(movie) => movie.id === currentTitle.id
@@ -30,7 +31,7 @@ const Bookmark = ({ currentTitle }) => {
 						</div>
 					) : (
 						<div //if the user has not seen this movie
-							className='group flex cursor-pointer flex-col items-center text-slate-300'
+							className='group flex cursor-pointer flex-col items-center text-slate-300 hover:text-green-500'
 							onMouseDown={(e) => e.preventDefault()}
 							onClick={() => {
 								addData({
@@ -38,11 +39,13 @@ const Bookmark = ({ currentTitle }) => {
 									seen: [
 										...currentUser.user_metadata.seen,
 										{
-											title: currentTitle.title,
+											title: currentTitle.title ? currentTitle.title : currentTitle.name,
 											type: currentTitle.title ? "movie" : "tv",
-											year: currentTitle.release_date.slice(0, 4),
-											poster: currentTitle.poster_path,
-											rating: currentTitle.vote_average,
+											release_date: currentTitle.release_date
+												? currentTitle.release_date.slice(0, 4)
+												: currentTitle.first_air_date.slice(0, 4),
+											poster_path: currentTitle.poster_path,
+											vote_average: currentTitle.vote_average,
 											id: currentTitle.id,
 											dateAdded: new Date().toISOString(),
 										},
@@ -50,8 +53,8 @@ const Bookmark = ({ currentTitle }) => {
 								});
 							}}
 						>
-							<IoEyeOffOutline size={"24px"} className='group-hover:text-green-500' />
-							<p className='group-hover:text-white'>Watch</p>
+							<IoEyeOffOutline size={"24px"} />
+							<p className='text-slate-300 group-hover:text-white'>Watch</p>
 						</div>
 					)}
 				</div>
@@ -79,7 +82,7 @@ const Bookmark = ({ currentTitle }) => {
 						</div>
 					) : (
 						<div //if the user has not liked this movie
-							className='group flex cursor-pointer flex-col items-center text-slate-300'
+							className='group flex cursor-pointer flex-col items-center text-slate-300 hover:text-red-600'
 							onMouseDown={(e) => e.preventDefault()}
 							onClick={() => {
 								addData({
@@ -87,11 +90,13 @@ const Bookmark = ({ currentTitle }) => {
 									liked: [
 										...currentUser.user_metadata.liked,
 										{
-											title: currentTitle.title,
+											title: currentTitle.title ? currentTitle.title : currentTitle.name,
 											type: currentTitle.title ? "movie" : "tv",
-											year: currentTitle.release_date.slice(0, 4),
-											poster: currentTitle.poster_path,
-											rating: currentTitle.vote_average,
+											release_date: currentTitle.release_date
+												? currentTitle.release_date.slice(0, 4)
+												: currentTitle.first_air_date.slice(0, 4),
+											poster_path: currentTitle.poster_path,
+											vote_average: currentTitle.vote_average,
 											id: currentTitle.id,
 											dateAdded: new Date().toISOString(),
 										},
@@ -99,7 +104,7 @@ const Bookmark = ({ currentTitle }) => {
 								});
 							}}
 						>
-							<IoHeartOutline size={"24px"} className='group-hover:text-red-500' />
+							<IoHeartOutline size={"24px"} />
 							<p className='text-slate-300 group-hover:text-white'>Like</p>
 						</div>
 					)}
@@ -128,7 +133,7 @@ const Bookmark = ({ currentTitle }) => {
 						</div>
 					) : (
 						<div //if the user has not added this movie to their watchlist
-							className='group flex cursor-pointer flex-col items-center text-slate-300'
+							className='group flex cursor-pointer flex-col items-center text-slate-300 hover:text-cyan-500'
 							onMouseDown={(e) => e.preventDefault()}
 							onClick={() => {
 								addData({
@@ -136,11 +141,13 @@ const Bookmark = ({ currentTitle }) => {
 									watchlist: [
 										...currentUser.user_metadata.watchlist,
 										{
-											title: currentTitle.title,
+											title: currentTitle.title ? currentTitle.title : currentTitle.name,
 											type: currentTitle.title ? "movie" : "tv",
-											year: currentTitle.release_date.slice(0, 4),
-											poster: currentTitle.poster_path,
-											rating: currentTitle.vote_average,
+											release_date: currentTitle.release_date
+												? currentTitle.release_date.slice(0, 4)
+												: currentTitle.first_air_date.slice(0, 4),
+											poster_path: currentTitle.poster_path,
+											vote_average: currentTitle.vote_average,
 											id: currentTitle.id,
 											dateAdded: new Date().toISOString(),
 										},
@@ -148,7 +155,7 @@ const Bookmark = ({ currentTitle }) => {
 								});
 							}}
 						>
-							<BsBookmarkPlus size={"22px"} className='group-hover:text-cyan-500' />
+							<BsBookmarkPlus size={"22px"} />
 							<p className='text-slate-300 group-hover:text-white'>Watchlist</p>
 						</div>
 					)}

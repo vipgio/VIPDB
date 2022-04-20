@@ -7,7 +7,7 @@ import { UserContext } from "../../context/UserContext";
 const LoginModal = ({ closeModal }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const { handleLogin, recovery } = useContext(UserContext);
+	const { handleLogin, recovery, loading } = useContext(UserContext);
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		handleLogin(email, password, closeModal);
@@ -47,6 +47,7 @@ const LoginModal = ({ closeModal }) => {
 							type='email'
 							autoComplete='email'
 							required
+							disabled={loading}
 							className='relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
 							placeholder='Email address'
 							value={email}
@@ -61,6 +62,7 @@ const LoginModal = ({ closeModal }) => {
 							type='password'
 							autoComplete='current-password'
 							required
+							disabled={loading}
 							className='relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
 							placeholder='Password'
 							value={password}
@@ -81,14 +83,19 @@ const LoginModal = ({ closeModal }) => {
 
 					<div>
 						<button
+							disabled={!email || !password || loading}
 							type='submit'
-							className='group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+							className='group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed'
 						>
 							<span className='absolute inset-y-0 left-0 flex items-center pl-3'>
-								<HiLockClosed
-									className='h-5 w-5 text-indigo-500 group-hover:text-indigo-400'
-									aria-hidden='true'
-								/>
+								{loading ? (
+									<div className='h-7 w-7 animate-spin rounded-full border-4 border-white border-t-gray-500'></div>
+								) : (
+									<HiLockClosed
+										className='h-5 w-5 text-indigo-500 group-hover:text-indigo-400'
+										aria-hidden='true'
+									/>
+								)}
 							</span>
 							Sign in
 						</button>

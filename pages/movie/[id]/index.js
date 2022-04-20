@@ -72,31 +72,40 @@ const Movie = () => {
 					{currentUser ? (
 						<Bookmark currentTitle={currentTitle} />
 					) : (
-						<div>login to rate</div>
+						<div>login to review</div>
 					)}
 				</div>
 				<section className='w-full sm:w-3/4 sm:pl-6'>
 					<Overview currentTitle={currentTitle} /> {/*title, runtime, release, overview*/}
 					<div>
 						<div>
-							<Trailer
-								trailer={
-									currentTitle.videos.results.filter(
-										(video) =>
-											video.official &&
-											video.type === "Trailer" &&
-											(video.name === "Official Trailer" || video.name === "Main Trailer")
-									)[0]
-								}
-								key={
-									currentTitle.videos.results.filter(
-										(video) =>
-											video.official &&
-											video.type === "Trailer" &&
-											(video.name === "Official Trailer" || video.name === "Main Trailer")
-									)[0].id
-								}
-							/>
+							{currentTitle.videos.results.filter(
+								(video) =>
+									video.official &&
+									video.type === "Trailer" &&
+									(video.name === "Official Trailer" || video.name === "Main Trailer")
+							).length > 0 && (
+								<Trailer
+									trailer={
+										currentTitle.videos.results.filter(
+											(video) =>
+												video.official &&
+												video.type === "Trailer" &&
+												(video.name === "Official Trailer" ||
+													video.name === "Main Trailer")
+										)[0]
+									}
+									key={
+										currentTitle.videos.results.filter(
+											(video) =>
+												video.official &&
+												video.type === "Trailer" &&
+												(video.name === "Official Trailer" ||
+													video.name === "Main Trailer")
+										)[0].id
+									}
+								/>
+							)}
 						</div>
 					</div>
 				</section>

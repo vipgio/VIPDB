@@ -39,7 +39,9 @@ export const Navbar = () => {
 
 			<div
 				className={`${
-					showBurger ? "no-scrollbar h-[165px] overflow-y-scroll" : "h-0 overflow-hidden"
+					showBurger
+						? "no-scrollbar max-h-[165px] overflow-y-scroll"
+						: "h-0 overflow-hidden"
 					// showBurger ? "opacity-100" : "opacity-0"
 				} absolute top-3 right-0 z-10 flex-col rounded-xl bg-white transition-all duration-300 sm:hidden`}
 			>
@@ -74,11 +76,11 @@ export const Navbar = () => {
 							</a>
 						</Link>
 
-						<Link href='/ninjas/'>
+						{/* <Link href='/ninjas/'>
 							<a className='mb-2 text-slate-800' onClick={() => setShowBurger(false)}>
 								Ninja Listing
 							</a>
-						</Link>
+						</Link> */}
 
 						<Link href='/search'>
 							<a className='mb-2 text-slate-800' onClick={() => setShowBurger(false)}>
@@ -86,11 +88,13 @@ export const Navbar = () => {
 							</a>
 						</Link>
 
-						<Link href='/profile'>
-							<a className='mb-2 text-slate-800' onClick={() => setShowBurger(false)}>
-								Profile
-							</a>
-						</Link>
+						{currentUser && (
+							<Link href='/profile'>
+								<a className='mb-2 text-slate-800' onClick={() => setShowBurger(false)}>
+									Profile
+								</a>
+							</Link>
+						)}
 					</div>
 				</div>
 			</div>
@@ -109,17 +113,19 @@ export const Navbar = () => {
 							<a className='link ml-3 text-slate-100'>Home</a>
 						</Link>
 
-						<Link href='/ninjas/'>
+						{/* <Link href='/ninjas/'>
 							<a className='link ml-3 text-slate-100'>Ninja Listing</a>
-						</Link>
+						</Link> */}
 
 						<Link href='/search'>
 							<a className='link ml-3 text-slate-100'>Search</a>
 						</Link>
 
-						<Link href='/profile'>
-							<a className='link ml-3 text-slate-100'>Profile</a>
-						</Link>
+						{currentUser && (
+							<Link href='/profile'>
+								<a className='link ml-3 text-slate-100'>Profile</a>
+							</Link>
+						)}
 
 						{/* <StarRating /> */}
 						{currentUser ? (

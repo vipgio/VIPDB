@@ -305,3 +305,19 @@ button {
 		transform: translatex(0) translatey(0);
 	}
 }
+@keyframes spinner {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.loading-spinner {
+	width: 50px;
+	height: 50px;
+	border: 4px solid #f3f3f3; /* Light grey */
+	border-top: 4px solid red; /* Blue */
+	border-radius: 50%;
+	animation: spinner 1.5s linear infinite;
+}

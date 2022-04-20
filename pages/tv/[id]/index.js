@@ -10,6 +10,7 @@ import { TitleContext } from "../../../context/TitleContext";
 import Banner from "../../../HOC/Banner";
 import BigPoster from "../../../HOC/BigPoster";
 import NotFound from "../../404";
+import { UserContext } from "../../../context/UserContext";
 
 const axios = require("axios").default;
 
@@ -17,11 +18,7 @@ const Show = () => {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(true);
 	const [is404, setIs404] = useState(false);
-	const [userStuff, setUserStuff] = useState({
-		like: true,
-		watch: false,
-		watchlist: false,
-	});
+	const { currentUser } = useContext(UserContext);
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
 	const query = router.query;
 
@@ -63,10 +60,10 @@ const Show = () => {
 						  currentTitle.last_air_date.slice(0, 4)
 							? `(${currentTitle.first_air_date.slice(0, 4)})`
 							: currentTitle.status === "Ended"
-							? `(${currentTitle.first_air_date.slice(0, 4)}-${title.last_air_date.slice(
+							? `(${currentTitle.first_air_date.slice(
 									0,
 									4
-							  )})`
+							  )}-${currentTitle.last_air_date.slice(0, 4)})`
 							: `(${currentTitle.first_air_date.slice(0, 4)}-)`
 						: `(${currentTitle.first_air_date.slice(0, 4)})`
 				} | VIPDB`}
@@ -76,7 +73,11 @@ const Show = () => {
 			<div className='mt-1 flex flex-col pt-2 sm:flex-row'>
 				<div className='flex flex-col items-center'>
 					<BigPoster path={currentTitle.poster_path} />
-					{/* {user ? <Bookmark /> : <div>login to rate</div>} */}
+					{currentUser ? (
+						<Bookmark currentTitle={currentTitle} />
+					) : (
+						<div>login to review</div>
+					)}
 				</div>
 				<section className='w-full sm:w-3/4 sm:pl-6'>
 					<Overview currentTitle={currentTitle} /> {/*title, runtime, release, overview*/}

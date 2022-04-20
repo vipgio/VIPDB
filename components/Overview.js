@@ -79,7 +79,7 @@ const Overview = ({ currentTitle }) => {
 									? `(${currentTitle.first_air_date.slice(
 											0,
 											4
-									  )}-${title.last_air_date.slice(0, 4)})`
+									  )}-${currentTitle.last_air_date.slice(0, 4)})`
 									: `(${currentTitle.first_air_date.slice(0, 4)}-)`
 								: `(${currentTitle.first_air_date.slice(0, 4)})`}
 						</span>

@@ -145,6 +145,7 @@ const UserContextProvider = (props) => {
 				addData,
 				getSession,
 				clearData,
+				loading,
 			}}
 		>
 			{props.children}
