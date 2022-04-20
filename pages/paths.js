@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+/*import { useRouter } from "next/router";
 export default function Post({ post }) {
   console.log(post);
   const router = useRouter();
@@ -27,3 +27,4 @@ export async function getStaticProps(context) {
   console.log(post);
   return { props: { post } };
 }
+*/
