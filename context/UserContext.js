@@ -18,10 +18,15 @@ const UserContextProvider = (props) => {
 	const handleLogin = async (email, password) => {
 		try {
 			setLoading(true);
-			let { user, error } = await supabase.auth.signIn({
-				email: email,
-				password: password,
-			});
+			let { user, error } = await supabase.auth.signIn(
+				{
+					email: email,
+					password: password,
+				},
+				{
+					redirectTo: "https://vipdb.vercel.app/",
+				}
+			);
 			if (error) throw error;
 			setCurrentUser(user);
 			// console.log(user);
