@@ -7,7 +7,7 @@ import Image from "next/image";
 const axios = require("axios").default;
 import blankImage from "../../../components/nullPic.jpg";
 
-const credtis = () => {
+const Credtis = () => {
 	const router = useRouter();
 	const query = router.query;
 	const [isLoading, setIsLoading] = useState(true);
@@ -118,4 +118,4 @@ const credtis = () => {
 	}
 };
 
-export default credtis;
+export default Credtis;

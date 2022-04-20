@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+/*import { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { createClient } from "@supabase/supabase-js";
 import { HiLockClosed } from "react-icons/hi";
@@ -109,7 +109,6 @@ export default function gql() {
 	// function openModal() {
 	// 	setIsOpen(true);
 	// }
-	return <LoginButton />;
 	// return (
 	// 	<>
 	// 		<div className='fixed inset-0 flex items-center justify-center'>
@@ -148,4 +147,4 @@ export default function gql() {
 	// 		</Transition>
 	// 	</>
 	// );
-}
+}*/

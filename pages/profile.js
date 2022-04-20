@@ -31,9 +31,7 @@ export default function Profile() {
 												<Bookmark currentTitle={movie} />
 											</div>
 											<Link
-												href={`/${movie.type}/${movie.id}-${`${
-													movie.type === "movie" ? movie.title : movie.name
-												}`
+												href={`/${movie.type}/${movie.id}-${`${movie.title}`
 													.toLowerCase()
 													.replace(/[ ]/g, "-")
 													.replace(/[,:;']/g, "")}`}
