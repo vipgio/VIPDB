@@ -22,7 +22,6 @@ const Movie = () => {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(true);
 	const [is404, setIs404] = useState(false);
-
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
 	const query = router.query;
 
@@ -33,15 +32,16 @@ const Movie = () => {
 			if (String(currentTitle.id) === query.id.slice(0, query.id.search(/[-]/g))) {
 				setIsLoading(false);
 			} else {
+				// const test = await fetch(`/api/movie/${query.id}`);
+				// const aaa = await test.json();
+				// console.log(aaa);
 				const options = {
 					method: "GET",
-					url: `https://api.themoviedb.org/3/movie/${
+					url: `/api/movie/${
 						query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
 							? query.id
 							: query.id.slice(0, query.id.search(/[-]/g))
-					}?api_key=${
-						process.env.TMDB_KEY
-					}&append_to_response=credits,release_dates,videos`,
+					}`,
 				};
 				try {
 					const data = await axios.request(options);
@@ -60,7 +60,9 @@ const Movie = () => {
 	) : !is404 ? (
 		<>
 			<Meta
-				title={`${currentTitle.title} (${currentTitle.release_date.slice(0, 4)}) | VIPDB`}
+				title={`${currentTitle.title} ${
+					currentTitle.release_date && `(${currentTitle.release_date.slice(0, 4)})`
+				} | VIPDB`}
 			/>
 
 			<Banner path={currentTitle.backdrop_path} />
@@ -80,28 +82,23 @@ const Movie = () => {
 					<div>
 						<div>
 							{currentTitle.videos.results.filter(
-								(video) =>
-									video.official &&
-									video.type === "Trailer" &&
-									(video.name === "Official Trailer" || video.name === "Main Trailer")
+								(video) => video.official && video.type === "Trailer"
 							).length > 0 && (
 								<Trailer
 									trailer={
 										currentTitle.videos.results.filter(
-											(video) =>
-												video.official &&
-												video.type === "Trailer" &&
-												(video.name === "Official Trailer" ||
-													video.name === "Main Trailer")
+											(video) => video.official && video.type === "Trailer"
+											// &&
+											// (video.name === "Official Trailer" ||
+											// 	video.name === "Main Trailer")
 										)[0]
 									}
 									key={
 										currentTitle.videos.results.filter(
-											(video) =>
-												video.official &&
-												video.type === "Trailer" &&
-												(video.name === "Official Trailer" ||
-													video.name === "Main Trailer")
+											(video) => video.official && video.type === "Trailer"
+											// &&
+											// (video.name === "Official Trailer" ||
+											// 	video.name === "Main Trailer")
 										)[0].id
 									}
 								/>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SearchResult from "../components/SearchResults";
+import SearchResults from "../components/SearchResults";
 import Meta from "../components/Meta";
 const axios = require("axios").default;
 
@@ -50,7 +50,7 @@ const Search = () => {
 					/>
 				</form>
 			</div>
-			<div>{searchRes && <SearchResult data={searchRes} />}</div>
+			<div>{searchRes && <SearchResults data={searchRes} />}</div>
 		</>
 	);
 };

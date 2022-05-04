@@ -7,11 +7,28 @@ const UserContextProvider = (props) => {
 	const supabaseUrl = process.env.SUPABASE_URL;
 	const supabaseKey = process.env.SUPABASE_KEY;
 	const supabase = createClient(supabaseUrl, supabaseKey);
-	const [currentUser, setCurrentUser] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [modalType, setModalType] = useState("");
+	const [currentUser, setCurrentUser] = useState(null);
+
+	useEffect(() => {
+		const user = localStorage.getItem("user");
+		console.log(user ? JSON.parse(user) : null);
+		setCurrentUser(user ? JSON.parse(user) : null);
+	}, []);
+	// useEffect(() => {}, []);
+	// const loadingValue = () => {
+	// 	if (typeof window !== "undefined") {
+	// 		const user = localStorage.getItem("user");
+	// 		return user ? JSON.parse(user) : {};
+	// 	}
+	// };
+
+	// const [currentUser, setCurrentUser] = useState(loadingValue);
 	const getUser = async () => {
 		const user = await supabase.auth.user();
 		setCurrentUser(user);
+		localStorage.setItem("user", JSON.stringify(user));
 		console.log(user);
 	};
 
@@ -29,7 +46,7 @@ const UserContextProvider = (props) => {
 			);
 			if (error) throw error;
 			setCurrentUser(user);
-			// console.log(user);
+			localStorage.setItem("user", JSON.stringify(user));
 		} catch (error) {
 			alert(error.error_description || error.message);
 		} finally {
@@ -59,6 +76,7 @@ const UserContextProvider = (props) => {
 				alert("User created successfully");
 				closeModal();
 				setCurrentUser(user);
+				localStorage.setItem("user", JSON.stringify(user));
 			}
 		} catch (error) {
 			alert(error.error_description || error.message);
@@ -90,6 +108,7 @@ const UserContextProvider = (props) => {
 			let { error } = await supabase.auth.signOut();
 			if (error) throw error;
 			setCurrentUser(null);
+			localStorage.setItem("user", null);
 		} catch (error) {
 			alert(error.error_description || error.message);
 		} finally {
@@ -151,6 +170,8 @@ const UserContextProvider = (props) => {
 				getSession,
 				clearData,
 				loading,
+				setModalType,
+				modalType,
 			}}
 		>
 			{props.children}

@@ -6,7 +6,6 @@ import { UserContext } from "../context/UserContext";
 import SearchBox from "./SearchBox";
 import { LoginButton } from "./UserComponents/LoginButton";
 import { LogoutButton } from "./UserComponents/LogoutButton";
-import { RegisterButton } from "./UserComponents/RegisterButton";
 export const Navbar = () => {
 	const [showBurger, setShowBurger] = useState(false);
 	const { currentUser, getUser, getSession, clearData } = useContext(UserContext);
@@ -43,7 +42,7 @@ export const Navbar = () => {
 						? "no-scrollbar max-h-[300px] overflow-y-scroll"
 						: "h-0 overflow-hidden"
 					// showBurger ? "opacity-100" : "opacity-0"
-				} absolute top-3 right-0 z-10 flex-col rounded-xl bg-white transition-all duration-300 sm:hidden`}
+				} absolute top-3 right-0 z-20 flex-col rounded-xl bg-white transition-all duration-300 sm:hidden`}
 			>
 				<div className='m-2'>
 					<svg
@@ -101,11 +100,8 @@ export const Navbar = () => {
 							</>
 						) : (
 							<div className='flex flex-col'>
-								<span>
+								<span onClick={() => setShowBurger(false)}>
 									<LoginButton />
-								</span>
-								<span className='mt-3'>
-									<RegisterButton text={"Register"} />
 								</span>
 							</div>
 						)}
@@ -126,10 +122,6 @@ export const Navbar = () => {
 						<Link href='/'>
 							<a className='link ml-3 text-slate-100'>Home</a>
 						</Link>
-
-						{/* <Link href='/ninjas/'>
-							<a className='link ml-3 text-slate-100'>Ninja Listing</a>
-						</Link> */}
 
 						<Link href='/search'>
 							<a className='link ml-3 text-slate-100'>Search</a>
@@ -153,9 +145,6 @@ export const Navbar = () => {
 							<div className='flex'>
 								<span className='ml-3'>
 									<LoginButton />
-								</span>
-								<span className='ml-3'>
-									<RegisterButton text={"Create an Account"} />
 								</span>
 							</div>
 						)}

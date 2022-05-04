@@ -26,7 +26,7 @@ const TitleSliderCard = ({ item, type }) => {
 		}
 	}, []);
 	return (
-		<li className='relative mx-4 flex w-60 min-w-[150px] max-w-[150px] snap-center flex-col overflow-hidden rounded-md '>
+		<li className='relative mx-4 flex w-60 min-w-[150px] max-w-[150px] snap-center flex-col overflow-hidden rounded-md shadow-lg'>
 			<div className='text-[0]'>
 				<Link
 					href={`/${type === "movie" ? "movie" : "tv"}/${item.id}-${`${
@@ -61,9 +61,11 @@ const TitleSliderCard = ({ item, type }) => {
 							<span className='font-bold text-slate-200 group-hover:text-sky-400'>
 								{item.title}{" "}
 							</span>
-							<span className='text-slate-300 group-hover:text-sky-400'>
-								({item.release_date.slice(0, 4)})
-							</span>
+							{item.release_date && (
+								<span className='text-slate-300 group-hover:text-sky-400'>
+									({item.release_date.slice(0, 4)})
+								</span>
+							)}
 						</a>
 					</Link>
 				) : (

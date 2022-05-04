@@ -9,7 +9,7 @@ const Overview = ({ currentTitle }) => {
 					<h1>
 						<span className='text-5xl'>{currentTitle.title} </span>
 						<span className='text-3xl text-slate-300'>
-							({currentTitle.release_date.slice(0, 4)})
+							{currentTitle.release_date && `(${currentTitle.release_date.slice(0, 4)})`}
 						</span>
 					</h1>
 					<div className='flex'>

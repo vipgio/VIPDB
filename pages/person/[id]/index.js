@@ -25,11 +25,11 @@ const Person = () => {
 		if (query.id) {
 			const options = {
 				method: "GET",
-				url: `https://api.themoviedb.org/3/person/${
+				url: `/api/person/${
 					query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
 						? query.id
 						: query.id.slice(0, query.id.search(/[-]/g))
-				}?api_key=${process.env.TMDB_KEY}&append_to_response=combined_credits`,
+				}`,
 			};
 			try {
 				const data = await axios.request(options);
@@ -51,7 +51,7 @@ const Person = () => {
 			<div className='mt-4 flex w-full flex-col text-slate-200 sm:flex-row'>
 				<div className='mx-2'>
 					<div className='flex flex-col items-center'>
-						<BigPoster path={currentPerson.profile_path} />
+						<BigPoster path={currentPerson.profile_path} titleName={currentPerson.name} />
 						<h2 className='block text-3xl sm:hidden'>{currentPerson.name}</h2>
 					</div>
 
@@ -66,15 +66,23 @@ const Person = () => {
 								<span className='mt-2 block text-lg font-semibold'>Gender</span>
 								{currentPerson.gender === 2 ? "Male" : "Female"}
 							</p>
+
 							<p>
 								<span className='mt-2 block text-lg font-semibold'>Birthday</span>
-								{currentPerson.birthday} (
-								{new Date().getFullYear() - Number(currentPerson.birthday.slice(0, 4))}{" "}
-								years old)
+								{currentPerson.birthday ? (
+									<>
+										{currentPerson.birthday} (
+										{new Date().getFullYear() -
+											Number(currentPerson.birthday.slice(0, 4))}{" "}
+										years old)
+									</>
+								) : (
+									"-"
+								)}
 							</p>
 							<p>
 								<span className='mt-2 block text-lg font-semibold'>Place of Birth</span>
-								{currentPerson.place_of_birth}
+								{currentPerson.place_of_birth || "-"}
 							</p>
 						</section>
 					</section>
@@ -84,17 +92,22 @@ const Person = () => {
 						{currentPerson.name}
 					</h1>
 					<p>
-						<span className='block text-2xl font-bold'>Biography</span>
-						{currentPerson.biography.replace(/[.]/g, "-----------------")}
+						<span className='mb-2 block text-2xl font-bold'>Biography</span>
+						{currentPerson.biography}
+						{!currentPerson.biography && "We don't have a biography for this person yet."}
 					</p>
 					<div className=''>
 						<TitleSlider
-							items={currentPerson.combined_credits.cast
-								.sort((a, b) => (a.vote_count > b.vote_count ? -1 : 1))
+							items={currentPerson.combined_credits[
+								`${currentPerson.known_for_department === "Acting" ? "cast" : "crew"}`
+							]
+								.sort((a, b) => b.vote_count - a.vote_count)
+								.filter((value, index, self) => {
+									return self.findIndex((v) => v.id === value.id) === index;
+								})
 								.slice(0, 7)}
 						/>
 					</div>
-					<div>lorem*20</div>
 				</div>
 			</div>
 		</>

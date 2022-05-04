@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 
-const LoginModal = ({ closeModal }) => {
+const LoginModal = ({ closeModal, setModalType }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { handleLogin, recovery, loading } = useContext(UserContext);
@@ -17,6 +17,7 @@ const LoginModal = ({ closeModal }) => {
 		e.preventDefault();
 		recovery(email, closeModal);
 	};
+
 	return (
 		<div className='relative mt-32 flex min-h-full w-96 justify-center rounded-lg bg-gray-200 py-12 px-4 sm:px-6 lg:px-8'>
 			<div className='w-full max-w-md space-y-4'>
@@ -29,12 +30,15 @@ const LoginModal = ({ closeModal }) => {
 					<h2 className='mt-2 text-center text-3xl font-extrabold text-gray-900'>
 						Sign in to your account
 					</h2>
-					{/* <p className='mt-3 text-center text-sm text-gray-600'>
+					<p className='mt-3 text-center text-sm text-gray-600'>
 						Or{" "}
-						<button className='font-medium text-indigo-600 hover:text-indigo-500'>
+						<button
+							className='font-medium text-indigo-600 hover:text-indigo-500'
+							onClick={() => setModalType("register")}
+						>
 							Create a new account
 						</button>
-					</p> */}
+					</p>
 				</div>
 				<form className='mt-1 space-y-6' onSubmit={handleSubmit}>
 					<div className='-space-y-px rounded-md shadow-sm'>

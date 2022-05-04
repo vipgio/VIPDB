@@ -1,20 +1,25 @@
 import { Fragment, useContext, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import RegisterModal from "./RegisterModal";
+import LoginModal from "./LoginModal";
 import { UserContext } from "../../context/UserContext";
 export const RegisterButton = ({ text }) => {
-	console.log(text);
 	let [isOpen, setIsOpen] = useState(false);
 	const closeModal = () => setIsOpen(false);
-	const openModal = () => setIsOpen(true);
-	const { currentUser } = useContext(UserContext);
-	console.log(currentUser);
+	const { modalType, setModalType } = useContext(UserContext);
+	const callback = () => {
+		setModalType("login");
+	};
+	// const openModal = () => setIsOpen(true);
 	return (
 		<>
 			<div className='flex items-center justify-center'>
 				<button
 					type='button'
-					onClick={openModal}
+					onClick={() => {
+						setIsOpen(true);
+						setModalType("register");
+					}}
 					className='rounded-md bg-green-600 py-2 px-4 text-slate-100 outline-green-200 hover:bg-green-400 focus:outline'
 				>
 					{text}
@@ -40,7 +45,10 @@ export const RegisterButton = ({ text }) => {
 							leaveTo='opacity-0 scale-95'
 						>
 							<div className='flex justify-center'>
-								<RegisterModal closeModal={closeModal} />
+								{modalType === "register" && (
+									<RegisterModal closeModal={closeModal} callback={callback} />
+								)}
+								{modalType === "login" && <LoginModal closeModal={closeModal} />}
 							</div>
 						</Transition.Child>
 					</div>

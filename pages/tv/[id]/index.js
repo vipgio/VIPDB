@@ -29,13 +29,11 @@ const Show = () => {
 			} else {
 				const options = {
 					method: "GET",
-					url: `https://api.themoviedb.org/3/tv/${
+					url: `/api/tv/${
 						query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
 							? query.id
 							: query.id.slice(0, query.id.search(/[-]/g))
-					}?api_key=${
-						process.env.TMDB_KEY
-					}&append_to_response=aggregate_credits,release_dates`,
+					}`,
 				};
 				try {
 					const data = await axios.request(options);

@@ -3,46 +3,12 @@ import logo from "../../public/logo.png";
 import Image from "next/image";
 import { useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
-import { createClient } from "@supabase/supabase-js";
 
-const RegisterModal = ({ closeModal, setFormType }) => {
+const RegisterModal = ({ closeModal, setModalType }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { handleSignUp } = useContext(UserContext);
-	const supabaseUrl = process.env.SUPABASE_URL;
-	const supabaseKey = process.env.SUPABASE_KEY;
-	const supabase = createClient(supabaseUrl, supabaseKey);
-	const [loading, setLoading] = useState(false);
 
-	// const handleSignUp = async (e) => {
-	// 	e.preventDefault();
-	// 	try {
-	// 		setLoading(true);
-	// 		console.log(email, password);
-	// 		const { user, session, error } = await supabase.auth.signUp(
-	// 			{ email: email, password: password },
-	// 			{
-	// 				data: {
-	// 					seen: [],
-	// 					liked: [],
-	// 					ratings: [],
-	// 					reviews: [],
-	// 				},
-	// 			}
-	// 		);
-	// 		console.log(user, session, error);
-	// 		if (error) throw error;
-	// 		if (!error) {
-	// 			alert("User created successfully");
-	// 			closeModal();
-	// 		}
-	// 	} catch (error) {
-	// 		alert(error.error_description || error.message);
-	// 		// error.status === 422 && setPassword("");
-	// 	} finally {
-	// 		setLoading(false);
-	// 	}
-	// };
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		handleSignUp(email, password, closeModal);
@@ -59,12 +25,15 @@ const RegisterModal = ({ closeModal, setFormType }) => {
 					<h2 className='mt-2 text-center text-3xl font-extrabold text-gray-900'>
 						Create your account
 					</h2>
-					{/* <p className='mt-3 text-center text-sm text-gray-600'>
+					<p className='mt-3 text-center text-sm text-gray-600'>
 						Already have an account?{" "}
-						<button className='font-medium text-indigo-600 hover:text-indigo-500'>
+						<button
+							className='font-medium text-indigo-600 hover:text-indigo-500'
+							onClick={() => setModalType("login")}
+						>
 							Sign in
 						</button>
-					</p> */}
+					</p>
 				</div>
 				<form className='mt-1 space-y-6' onSubmit={handleSubmit}>
 					<div className='-space-y-px rounded-md shadow-sm'>

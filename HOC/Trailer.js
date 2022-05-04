@@ -27,10 +27,9 @@ const Trailer = ({ trailer }) => {
 						leaveFrom='opacity-100 translate-y-0'
 						leaveTo='opacity-0 translate-y-1'
 					>
-						<Popover.Panel className='fixed top-10 left-1/2 z-10 flex w-[90vw] -translate-x-1/2 transform justify-center md:w-[60vw]'>
+						<Popover.Panel className='fixed top-1/2 left-1/2 z-10 flex w-[90vw] -translate-y-1/2 -translate-x-1/2 transform justify-center md:w-[60vw]'>
 							<div className='z-20 mx-auto w-full'>
 								<div className='flex cursor-auto rounded-t-md bg-slate-600'>
-									<div>Trailer</div>
 									<div className='z-10 ml-auto flex aspect-square w-[5%] overflow-hidden rounded-tr-md bg-sky-600 focus-within:ring focus-within:ring-sky-400 focus:ring focus:ring-red-600'>
 										<Popover.Button onClick={() => console.log("button")}>
 											<IoCloseOutline
@@ -41,7 +40,7 @@ const Trailer = ({ trailer }) => {
 										</Popover.Button>
 									</div>
 								</div>
-								<div className='relative mt-px aspect-video overflow-hidden rounded-b-md'>
+								<div className='relative aspect-video overflow-hidden rounded-b-md'>
 									<div className='h-full w-[calc(100%_-_1px)] animate-pulse rounded-b-md bg-gray-600'></div>
 									<iframe
 										src={`https://www.youtube-nocookie.com/embed/${trailer.key}`}

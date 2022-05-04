@@ -1,18 +1,27 @@
 import { Fragment, useContext, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import LoginModal from "./LoginModal";
+import RegisterModal from "./RegisterModal";
 import { UserContext } from "../../context/UserContext";
 export const LoginButton = () => {
 	let [isOpen, setIsOpen] = useState(false);
 
 	const closeModal = () => setIsOpen(false);
 	const openModal = () => setIsOpen(true);
+	// const { modalType, setModalType } = useContext(UserContext);
+	const [modalType, setModalType] = useState("login");
+	const changeModal = (type) => {
+		setModalType(type);
+	};
 	return (
 		<>
 			<div className='flex items-center justify-center'>
 				<button
 					type='button'
-					onClick={openModal}
+					onClick={() => {
+						setModalType("login");
+						openModal();
+					}}
 					className='my-button rounded-md bg-sky-600 py-2 px-4 text-slate-100 outline-sky-200 hover:bg-sky-400 focus:outline'
 				>
 					Sign In
@@ -38,7 +47,12 @@ export const LoginButton = () => {
 							leaveTo='opacity-0 scale-95'
 						>
 							<div className='flex justify-center'>
-								<LoginModal closeModal={closeModal} />
+								{modalType === "register" && (
+									<RegisterModal closeModal={closeModal} setModalType={setModalType} />
+								)}
+								{modalType === "login" && (
+									<LoginModal closeModal={closeModal} setModalType={setModalType} />
+								)}
 							</div>
 						</Transition.Child>
 					</div>

@@ -4,7 +4,6 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 const Bookmark = ({ currentTitle }) => {
 	const { currentUser, addData } = useContext(UserContext);
-	console.log(currentTitle);
 	return (
 		<>
 			<div className='grid w-full grid-cols-3 justify-evenly'>
@@ -16,6 +15,7 @@ const Bookmark = ({ currentTitle }) => {
 							className='group flex cursor-pointer flex-col items-center text-green-500 hover:text-slate-300'
 							onMouseDown={(e) => e.preventDefault()}
 							onClick={() => {
+								//remove the movie from the seen list
 								addData({
 									...currentUser.user_metadata,
 									seen: [
