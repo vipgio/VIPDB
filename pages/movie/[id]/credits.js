@@ -138,7 +138,7 @@ const Credtis = () => {
 					{departments
 						.sort((a, b) => a.name.localeCompare(b.name))
 						.map((department) => (
-							<div className='mb-6 ml-2'>
+							<div className='mb-6 ml-2' key={department.id + department.name}>
 								<div className='text-xl'>{department.name}</div>
 								{currentTitle.credits.crew
 
