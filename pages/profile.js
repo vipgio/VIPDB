@@ -34,7 +34,7 @@ export default function Profile() {
 												href={`/${movie.type}/${movie.id}-${`${movie.title}`
 													.toLowerCase()
 													.replace(/[ ]/g, "-")
-													.replace(/[,:;']/g, "")}`}
+													.replace(/[,:;'.]/g, "")}`}
 											>
 												<a>
 													<Image

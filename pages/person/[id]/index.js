@@ -1,15 +1,12 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import Bookmark from "../../../components/Bookmark";
-import CastSlider from "../../../HOC/CastSlider";
+import { useEffect, useState } from "react";
 import Meta from "../../../components/Meta";
 import Overview from "../../../components/Overview";
 import StarRating from "../../../components/StarRating";
-import { TitleContext } from "../../../context/TitleContext";
 import TitleSlider from "../../../HOC/TitleSlider";
 import BigPoster from "../../../HOC/BigPoster";
 import NotFound from "../../404";
+import { PersonTitlesList } from "../../../components/PersonTitlesList";
 
 const axios = require("axios").default;
 
@@ -18,7 +15,7 @@ const Person = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [is404, setIs404] = useState(false);
 	const [currentPerson, setCurrentPerson] = useState({});
-	const [showFull, setShowFull] = useState(false);
+	const [showMore, setShowMore] = useState(false);
 	const query = router.query;
 
 	useEffect(async () => {
@@ -42,7 +39,6 @@ const Person = () => {
 			setIsLoading(false);
 		}
 	}, [query]);
-
 	return isLoading ? (
 		"loading" //loading template here
 	) : !is404 ? (
@@ -64,22 +60,41 @@ const Person = () => {
 							</p>
 							<p>
 								<span className='mt-2 block text-lg font-semibold'>Gender</span>
-								{currentPerson.gender === 2 ? "Male" : "Female"}
+								{currentPerson.gender === 0
+									? "-"
+									: currentPerson.gender === 1
+									? "Female"
+									: "Male"}
 							</p>
 
 							<p>
 								<span className='mt-2 block text-lg font-semibold'>Birthday</span>
 								{currentPerson.birthday ? (
 									<>
-										{currentPerson.birthday} (
-										{new Date().getFullYear() -
-											Number(currentPerson.birthday.slice(0, 4))}{" "}
-										years old)
+										{currentPerson.birthday}
+										{!currentPerson.deathday && (
+											<>
+												{" "}
+												(
+												{new Date().getFullYear() -
+													Number(currentPerson.birthday.slice(0, 4))}{" "}
+												years old)
+											</>
+										)}
 									</>
 								) : (
 									"-"
 								)}
 							</p>
+							{currentPerson.deathday && (
+								<p>
+									<span className='mt-2 block text-lg font-semibold'>Day of Death</span>
+									{currentPerson.deathday} (
+									{currentPerson.deathday.slice(0, 4) -
+										currentPerson.birthday.slice(0, 4)}{" "}
+									years old)
+								</p>
+							)}
 							<p>
 								<span className='mt-2 block text-lg font-semibold'>Place of Birth</span>
 								{currentPerson.place_of_birth || "-"}
@@ -88,14 +103,33 @@ const Person = () => {
 					</section>
 				</div>
 				<div className='mx-2 flex flex-col overflow-hidden'>
-					<h1 className='mb-3 hidden text-4xl font-bold sm:block'>
+					<h1 className='mb-8 hidden text-4xl font-bold sm:block'>
 						{currentPerson.name}
 					</h1>
-					<p>
+					<div>
 						<span className='mb-2 block text-2xl font-bold'>Biography</span>
-						{currentPerson.biography}
+						<div
+							className={`whitespace-pre-wrap ${
+								showMore ? "max-h-[500px]" : "max-h-[230px]"
+							} relative overflow-hidden transition-all duration-200`}
+						>
+							<p className='mr-6'>{currentPerson.biography}</p>
+							{!showMore && currentPerson.biography.length > 1250 && (
+								<div>
+									<div className='absolute bottom-0 right-0 w-full bg-gradient-to-r from-transparent to-slate-800 text-right'>
+										<button
+											className='m-1 bg-slate-800 px-5 hover:text-sky-400'
+											onClick={() => setShowMore(true)}
+										>
+											Show More &rarr;
+										</button>
+									</div>
+								</div>
+							)}
+						</div>
+
 						{!currentPerson.biography && "We don't have a biography for this person yet."}
-					</p>
+					</div>
 					<div className=''>
 						<TitleSlider
 							items={currentPerson.combined_credits[
@@ -107,6 +141,10 @@ const Person = () => {
 								})
 								.slice(0, 7)}
 						/>
+					</div>
+
+					<div>
+						<PersonTitlesList person={currentPerson} />
 					</div>
 				</div>
 			</div>

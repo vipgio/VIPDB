@@ -18,11 +18,11 @@ export const NavbarSearchResults = ({ data }) => {
 										? res.name
 												.toLowerCase()
 												.replace(/[ ]/g, "-")
-												.replace(/[,:;']/g, "")
+												.replace(/[,:;'.]/g, "")
 										: res.title
 												.toLowerCase()
 												.replace(/[ ]/g, "-")
-												.replace(/[,:;']/g, "")
+												.replace(/[,:;'.]/g, "")
 								}`}
 							>
 								<a>
@@ -49,7 +49,7 @@ export const NavbarSearchResults = ({ data }) => {
 										href={`/person/${res.id}-${res.name
 											.toLowerCase()
 											.replace(/[ ]/g, "-")
-											.replace(/[,:;']/g, "")}`}
+											.replace(/[,:;'.]/g, "")}`}
 									>
 										<a className='hover:text-sky-400'>
 											<div>{res.name}</div>
@@ -63,7 +63,7 @@ export const NavbarSearchResults = ({ data }) => {
 										href={`/movie/${res.id}-${res.title
 											.toLowerCase()
 											.replace(/[ ]/g, "-")
-											.replace(/[,:;']/g, "")}`}
+											.replace(/[,:;'.]/g, "")}`}
 									>
 										<a className='hover:text-sky-400'>
 											{res.title}{" "}
@@ -81,7 +81,7 @@ export const NavbarSearchResults = ({ data }) => {
 										href={`/tv/${res.id}-${res.name
 											.toLowerCase()
 											.replace(/[ ]/g, "-")
-											.replace(/[,:;']/g, "")}`}
+											.replace(/[,:;'.]/g, "")}`}
 									>
 										<a className='hover:text-sky-400'>
 											{res.name}{" "}

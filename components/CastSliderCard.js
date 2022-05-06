@@ -39,7 +39,7 @@ const CastSliderCard = ({ person }) => {
 				>
 					<a className='link font-extrabold text-slate-200'>{person.name}</a>
 				</Link>
-				{person.character ? (
+				{typeof person.character === "string" ? (
 					<span className='text-sm font-light text-slate-200'>{person.character}</span>
 				) : (
 					<>

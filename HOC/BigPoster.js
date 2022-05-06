@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
-
+import blankImage from "../components/nullPic.jpg";
 const BigPoster = ({ path, titleName }) => {
 	let [isOpen, setIsOpen] = useState(false);
 
@@ -16,18 +16,22 @@ const BigPoster = ({ path, titleName }) => {
 	return (
 		<>
 			<div className='relative mx-1 my-2 h-[450px] w-[300px] overflow-hidden rounded-md border border-slate-400 text-[0] sm:h-fit sm:w-80'>
-				<div
-					className='absolute left-0 top-0 z-10 flex h-full w-full cursor-pointer items-center justify-center bg-gray-700 text-base opacity-0 transition hover:bg-opacity-70 hover:opacity-100'
-					onClick={openModal}
-				>
-					Show full size poster
-				</div>
+				{path && (
+					<div
+						className='absolute left-0 top-0 z-10 flex h-full w-full cursor-pointer items-center justify-center bg-gray-700 text-base opacity-0 transition hover:bg-opacity-70 hover:opacity-100'
+						onClick={openModal}
+					>
+						Show full size poster
+					</div>
+				)}
 				<Image
 					width={1200}
 					height={1800}
 					quality={80}
 					placeholder='blur'
-					src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${path}`}
+					src={
+						path ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${path}` : blankImage
+					}
 					blurDataURL={`https://image.tmdb.org/t/p/w94_and_h141_bestv2${path}`}
 				/>
 			</div>

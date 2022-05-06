@@ -1,4 +1,3 @@
-import { useState } from "react";
 import TitleSliderCard from "../components/TitleSliderCard";
 
 const TitleSlider = ({ items }) => {

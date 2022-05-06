@@ -5,6 +5,7 @@ const Overview = ({ currentTitle }) => {
 	return (
 		<>
 			{currentTitle.title ? (
+				//movie
 				<div>
 					<h1>
 						<span className='text-5xl'>{currentTitle.title} </span>
@@ -12,29 +13,42 @@ const Overview = ({ currentTitle }) => {
 							{currentTitle.release_date && `(${currentTitle.release_date.slice(0, 4)})`}
 						</span>
 					</h1>
-					<div className='flex'>
-						{currentTitle.genres.map((genre, index) => (
-							<span className='mr-1' key={genre.id}>
-								<>
-									{
-										<Link
-											href={`/movies/genre/${genre.name
-												.toLowerCase()
-												.replace(/[ ]/g, "-")}`}
-										>
-											<a className='link'>{genre.name}</a>
-										</Link>
-									}
-									{index === currentTitle.genres.length - 1 ? "" : ", "}
-								</>
-							</span>
-						))}
-						{currentTitle.runtime > 0 && (
+					<div className='mt-2 flex'>
+						{currentTitle.genres.length > 0 ? (
 							<>
-								<span className='ml-3'>&#8226;</span>
-								<span className='ml-4'>
-									{(currentTitle.runtime / 60).toFixed(0)}h {currentTitle.runtime % 60}m
-								</span>
+								{currentTitle.genres.map((genre, index) => (
+									<span className='mr-1' key={genre.id}>
+										<>
+											{
+												<Link
+													href={`/movies/genre/${genre.name
+														.toLowerCase()
+														.replace(/[ ]/g, "-")}`}
+												>
+													<a className='link'>{genre.name}</a>
+												</Link>
+											}
+											{index === currentTitle.genres.length - 1 ? "" : ", "}
+										</>
+									</span>
+								))}
+								{currentTitle.runtime > 0 && (
+									<>
+										<span className='ml-3'>&#8226;</span>
+										<span className='ml-4'>
+											{(currentTitle.runtime / 60).toFixed(0)}h{" "}
+											{currentTitle.runtime % 60}m
+										</span>
+									</>
+								)}
+							</>
+						) : (
+							<>
+								{currentTitle.runtime > 0 && (
+									<span>
+										{(currentTitle.runtime / 60).toFixed(0)}h {currentTitle.runtime % 60}m
+									</span>
+								)}
 							</>
 						)}
 					</div>
@@ -43,30 +57,35 @@ const Overview = ({ currentTitle }) => {
 							<p className='my-2 italic text-slate-300'>{currentTitle.tagline}</p>
 							<h3 className='text-xl font-bold'>Overview</h3>
 							<p className='text-md text-slate-200'>{currentTitle.overview}</p>
-							<h2 className='mt-5 text-slate-300'>
-								Directed by:{" "}
-								{currentTitle.credits.crew
-									.filter((person) => person.job === "Director")
-									.map((director, index) => (
-										<span key={director.id}>
-											{index === 0 ? "" : ", "}
-											{
-												<Link
-													href={`/person/${director.id}-${director.name
-														.toLowerCase()
-														.replace(/[ ]/g, "-")}`}
-												>
-													<a className='link'>{director.name}</a>
-												</Link>
-											}
-										</span>
-									))}
-							</h2>
+							{currentTitle.credits.crew.filter((person) => person.job === "Director")
+								.length > 0 && (
+								<h2 className='mt-5 text-slate-300'>
+									Directed by:{" "}
+									{currentTitle.credits.crew
+										.filter((person) => person.job === "Director")
+										.map((director, index) => (
+											<span key={director.id}>
+												{index === 0 ? "" : ", "}
+												{
+													<Link
+														href={`/person/${director.id}-${director.name
+															.toLowerCase()
+															.replace(/[ ]/g, "-")
+															.replace(/[,:;'.]/g, "")}`}
+													>
+														<a className='link'>{director.name}</a>
+													</Link>
+												}
+											</span>
+										))}
+								</h2>
+							)}
 						</div>
 						{/* <DetailsBox /> */}
 					</div>
 				</div>
 			) : (
+				//tv
 				<div>
 					<h1>
 						<span className='text-5xl'>{currentTitle.name} </span>

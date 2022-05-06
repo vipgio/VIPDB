@@ -32,7 +32,7 @@ const SearchResults = ({ data }) => {
 										href={`/person/${res.id}-${res.name
 											.toLowerCase()
 											.replace(/[ ]/g, "-")
-											.replace(/[,:;']/g, "")}`}
+											.replace(/[,:;'.]/g, "")}`}
 									>
 										<a>
 											<div>{res.name}</div>
@@ -46,7 +46,7 @@ const SearchResults = ({ data }) => {
 										href={`/movie/${res.id}-${res.title
 											.toLowerCase()
 											.replace(/[ ]/g, "-")
-											.replace(/[,:;']/g, "")}`}
+											.replace(/[,:;'.]/g, "")}`}
 									>
 										<a>
 											{res.title} ({res.release_date?.slice(0, 4)})
@@ -64,7 +64,7 @@ const SearchResults = ({ data }) => {
 										href={`/tv/${res.id}-${res.name
 											.toLowerCase()
 											.replace(/[ ]/g, "-")
-											.replace(/[,:;']/g, "")}`}
+											.replace(/[,:;'.]/g, "")}`}
 									>
 										<a>
 											{res.name} ({res.first_air_date.slice(0, 4)}-)

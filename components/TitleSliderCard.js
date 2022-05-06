@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
+import blankImage from "./nullPic.jpg";
 const TitleSliderCard = ({ item, type }) => {
 	const [tvDetails, setTvDetails] = useState({});
 	const [isFetching, setIsFetching] = useState(false);
@@ -34,15 +34,17 @@ const TitleSliderCard = ({ item, type }) => {
 					}`
 						.toLowerCase()
 						.replace(/[ ]/g, "-")
-						.replace(/[,:;']/g, "")}`}
+						.replace(/[,:;'.]/g, "")}`}
 				>
 					<a>
 						<Image
-							src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2${item.poster_path}`}
-							// src={`https://www.themoviedb.org/t/p/original${movieData.poster_path}`}
+							src={
+								item.poster_path
+									? `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${item.poster_path}`
+									: blankImage
+							}
 							width={600}
 							height={900}
-							// quality={100}
 							placeholder='blur'
 							blurDataURL={`https://www.themoviedb.org/t/p/w94_and_h141_bestv2${item.poster_path}`}
 						/>
@@ -55,7 +57,7 @@ const TitleSliderCard = ({ item, type }) => {
 						href={`/movie/${item.id}-${item.title
 							.toLowerCase()
 							.replace(/[ ]/g, "-")
-							.replace(/[,:;']/g, "")}`}
+							.replace(/[,:;'.]/g, "")}`}
 					>
 						<a className='group'>
 							<span className='font-bold text-slate-200 group-hover:text-sky-400'>
@@ -73,7 +75,7 @@ const TitleSliderCard = ({ item, type }) => {
 						href={`/tv/${item.id}-${item.name
 							.toLowerCase()
 							.replace(/[ ]/g, "-")
-							.replace(/[,:;']/g, "")}`}
+							.replace(/[,:;'.]/g, "")}`}
 					>
 						<a className='group'>
 							<span className='font-bold group-hover:text-sky-400'>{item.name} </span>

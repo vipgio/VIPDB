@@ -3,14 +3,15 @@ import Meta from "../../../components/Meta";
 import { useContext, useEffect, useState } from "react";
 import { TitleContext } from "../../../context/TitleContext";
 import Link from "next/link";
-import Image from "next/image";
 const axios = require("axios").default;
-import blankImage from "../../../components/nullPic.jpg";
+import { PersonProfileImage } from "../../../components/PersonProfileImage";
+import { PersonNameLink } from "../../../components/PersonNameLink";
 
 const Credtis = () => {
 	const router = useRouter();
 	const query = router.query;
 	const [isLoading, setIsLoading] = useState(true);
+	const [lazyLimit, setLazyLimit] = useState(40);
 	const [is404, setIs404] = useState(false);
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
 	const [departments, setDepartments] = useState([]);
@@ -57,6 +58,7 @@ const Credtis = () => {
 			setIsLoading(false);
 		}
 	}, [query]);
+
 	return isLoading ? (
 		<div>Loading...</div> //skeleton
 	) : (
@@ -96,49 +98,16 @@ const Credtis = () => {
 				</div>
 			</div>
 			<section className='grid grid-cols-2 text-slate-200'>
-				<div>
+				<div className='pb-10'>
 					{/* cast */}
 					{!currentTitle.aggregate_credits.cast.length && (
 						<div>There are no cast records added to {currentTitle.name}.</div>
 					)}
-					{currentTitle.aggregate_credits.cast.map((person) => (
+					{currentTitle.aggregate_credits.cast.slice(0, lazyLimit).map((person) => (
 						<div key={person.id + person.name} className='shaodw-xl m-2 flex h-fit py-2'>
-							<div className='mr-2 overflow-hidden rounded-md text-[0px]'>
-								<Link
-									href={`/person/${person.id}-${person.name
-										.toLowerCase()
-										.replace(/[ ]/g, "-")
-										.replace(/[,:;']/g, "")}`}
-								>
-									<a>
-										<Image
-											src={
-												person.profile_path
-													? `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${person.profile_path}`
-													: blankImage
-											}
-											placeholder='blur'
-											blurDataURL={
-												"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkrAcAAIcAgit25/8AAAAASUVORK5CYII="
-											}
-											width={60}
-											height={90}
-											className='object-contain'
-										/>
-									</a>
-								</Link>
-							</div>
+							<PersonProfileImage person={person} />
 							<div>
-								<div className='text-lg hover:text-sky-400'>
-									<Link
-										href={`/person/${person.id}-${person.name
-											.toLowerCase()
-											.replace(/[ ]/g, "-")
-											.replace(/[,:;']/g, "")}`}
-									>
-										<a>{person.name}</a>
-									</Link>
-								</div>
+								<PersonNameLink person={person} />
 								<div className='text-sm text-slate-200'>
 									{person.roles.map((role) => (
 										<div key={role.credit_id + role.character}>
@@ -153,6 +122,14 @@ const Credtis = () => {
 							</div>
 						</div>
 					))}
+					{currentTitle.aggregate_credits.cast.length > lazyLimit && (
+						<button
+							className='m-2 hover:text-sky-400'
+							onClick={() => setLazyLimit((prev) => prev + 20)}
+						>
+							Load More &darr;
+						</button>
+					)}
 				</div>
 
 				<div>
@@ -160,7 +137,7 @@ const Credtis = () => {
 					{!currentTitle.aggregate_credits.crew.length && (
 						<div>There are no crew records added to {currentTitle.name}.</div>
 					)}
-					{departments
+					{/* {departments
 						.sort((a, b) => a.name.localeCompare(b.name))
 						.map((department) => (
 							<div className='mb-6 ml-2' key={department.id + department.name}>
@@ -173,31 +150,16 @@ const Credtis = () => {
 											className='my-2 flex py-2'
 											key={`${person.id + person.name + person.department}`}
 										>
-											<div className='mr-2 overflow-hidden rounded-md text-[0px]'>
-												<Image
-													src={
-														person.profile_path
-															? `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${person.profile_path}`
-															: blankImage
-													}
-													placeholder='blur'
-													blurDataURL={
-														"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkrAcAAIcAgit25/8AAAAASUVORK5CYII="
-													}
-													width={60}
-													height={90}
-													className='object-contain'
-												/>
-											</div>
+											<PersonProfileImage person={person} />
 											<div>
 												<div className='text-xl'>
 													<Link
 														href={`/person/${person.id}-${person.name
 															.toLowerCase()
 															.replace(/[ ]/g, "-")
-															.replace(/[,:;']/g, "")}`}
+															.replace(/[,:;'.]/g, "")}`}
 													>
-														<a>{person.name}</a>
+														<a className='hover:text-sky-400'>{person.name}</a>
 													</Link>
 												</div>
 												<div className='text-sm'>
@@ -215,7 +177,7 @@ const Credtis = () => {
 										</div>
 									))}
 							</div>
-						))}
+						))} */}
 				</div>
 			</section>
 		</>
