@@ -1,86 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { LinkHandler } from "../HOC/LinkHandler";
 
 export const PersonTitlesList = ({ person }) => {
 	const [filter, setFilter] = useState("all");
-	const [filteredList, setFilteredList] = useState(person.combined_credits.cast);
-
-	useEffect(() => {
-		filter === "movie" &&
-			setFilteredList((person.combined_credits.cast || []).filter((item) => item.title));
-		filter === "tv" &&
-			setFilteredList((person.combined_credits.cast || []).filter((item) => item.name));
-		filter === "all" &&
-			setFilteredList(
-				(person.combined_credits.cast || []).filter((item) => item.title || item.name)
-			);
-	}, [filter]);
 	return (
 		<div className='relative'>
-			<div className='absolute right-0 w-24 text-center'>
-				<Dropdown setFilter={setFilter} filter={filter} />
-			</div>
 			{person.known_for_department === "Acting" ? (
-				<>
-					<h2 className='mb-2 text-2xl font-semibold'>Acting</h2>
-					<div className='mb-2 divide-y border border-slate-300 shadow-lg'>
-						{filteredList
-							.sort((a, b) => {
-								//sort based on date, if no date is available then move the title to the top
-								if (a.first_air_date && b.first_air_date)
-									return a.first_air_date.localeCompare(b.first_air_date);
-								if (a.release_date && b.first_air_date)
-									return a.release_date.localeCompare(b.first_air_date);
-								if (a.first_air_date && b.release_date)
-									return a.first_air_date.localeCompare(b.release_date);
-								if (a.release_date && b.release_date)
-									return a.release_date.localeCompare(b.release_date);
-								if (!a.release_date && !a.first_air_date) return 1;
-								if (!b.release_date && !b.first_air_date) return -1;
-							})
-							.reverse()
-							.map((role) => (
-								<div
-									className='grid grid-cols-4 py-4 pr-2 md:grid-cols-9'
-									key={role.credit_id}
-								>
-									{role.first_air_date || role.release_date ? (
-										<span className='px-2 text-center'>
-											{role.first_air_date?.slice(0, 4) || role.release_date?.slice(0, 4)}{" "}
-										</span>
-									) : (
-										<span className='text-center'>—</span>
-									)}
-									{role.title && (
-										<>
-											<span className='col-span-3 md:col-span-8'>
-												<span className='text-lg font-bold'>
-													<LinkHandler type={"movie"} id={role.id} name={role.title} />
-												</span>
-												{role.character && (
-													<span className='font-thin'> as {role.character}</span>
-												)}
-											</span>
-										</>
-									)}
-									{role.name && (
-										<>
-											<span className='col-span-3 md:col-span-8'>
-												<span className='text-lg font-bold'>
-													<LinkHandler type={"tv"} id={role.id} name={role.name} />
-												</span>
-												{role.character && (
-													<span className='font-thin'> as {role.character}</span>
-												)}
-											</span>
-										</>
-									)}
-								</div>
-							))}
-					</div>
-				</>
+				<ActorList filter={filter} setFilter={setFilter} person={person} />
 			) : (
-				<div>{person.name}</div>
+				<CrewList filter={filter} setFilter={setFilter} person={person} />
 			)}
 		</div>
 	);
@@ -94,21 +22,188 @@ export const PersonTitlesList = ({ person }) => {
 // 	: a.release_date && b.release_date
 // 	? a.release_date.localeCompare(b.release_date)
 // 	: null;
-const Dropdown = ({ setFilter, filter }) => {
+const Dropdown = ({ setFilter, filter, options }) => {
 	return (
 		<div className='group'>
-			<div className='first-letter:uppercase'>{filter} &darr;</div>
-			<div className='group m-1 hidden flex-col bg-slate-200 text-black group-hover:flex'>
-				<button className='hover:text-sky-400' onClick={() => setFilter("all")}>
-					All
-				</button>
-				<button className='hover:text-sky-400' onClick={() => setFilter("movie")}>
-					Movies
-				</button>
-				<button className='hover:text-sky-400' onClick={() => setFilter("tv")}>
-					Tv
-				</button>
+			<div className='cursor-pointer first-letter:uppercase hover:font-semibold hover:text-white'>
+				{filter} &darr;
+			</div>
+			<div className='group m-1 hidden flex-col divide-y divide-slate-200 overflow-hidden rounded-md border group-hover:flex'>
+				{options.map((option) => (
+					<div
+						className='cursor-pointer bg-slate-800 first-letter:uppercase hover:bg-slate-300 hover:text-sky-600'
+						onClick={() => setFilter(option)}
+						key={option}
+					>
+						{option}
+					</div>
+				))}
 			</div>
 		</div>
+	);
+};
+
+const ActorList = ({ filter, setFilter, person }) => {
+	return (
+		<>
+			<div className='absolute right-0 w-24 text-center'>
+				<Dropdown
+					setFilter={setFilter}
+					filter={filter}
+					options={["all", "movie", "tv"]}
+				/>
+			</div>
+			<h2 className='mb-2 text-2xl font-semibold'>Acting</h2>
+			<div className='mb-2 divide-y border border-slate-300 shadow-lg'>
+				{person.combined_credits.cast
+					.sort((a, b) => {
+						//sort based on date, if no date is available then move the title to the top
+						if (a.first_air_date && b.first_air_date)
+							return a.first_air_date.localeCompare(b.first_air_date);
+						if (a.release_date && b.first_air_date)
+							return a.release_date.localeCompare(b.first_air_date);
+						if (a.first_air_date && b.release_date)
+							return a.first_air_date.localeCompare(b.release_date);
+						if (a.release_date && b.release_date)
+							return a.release_date.localeCompare(b.release_date);
+						if (!a.release_date && !a.first_air_date) return 1;
+						if (!b.release_date && !b.first_air_date) return -1;
+					})
+					.reverse()
+					.filter((item) => {
+						if (filter === "all") return true;
+						if (filter === "movie" && item.title) return true;
+						if (filter === "tv" && item.name) return true;
+					})
+					.map((role) => (
+						<div
+							className='grid grid-cols-4 py-4 pr-2 md:grid-cols-9'
+							key={role.credit_id}
+						>
+							{role.first_air_date || role.release_date ? (
+								<span className='px-2 text-center'>
+									{role.first_air_date?.slice(0, 4) || role.release_date?.slice(0, 4)}{" "}
+								</span>
+							) : (
+								<span className='text-center'>—</span>
+							)}
+							{role.title && (
+								<>
+									<span className='col-span-3 md:col-span-8'>
+										<span className='text-lg font-bold'>
+											<LinkHandler type={"movie"} id={role.id} name={role.title} />
+										</span>
+										{role.character && (
+											<span className='font-thin text-slate-400'>
+												{" "}
+												as <span className='text-slate-300'>{role.character}</span>
+											</span>
+										)}
+									</span>
+								</>
+							)}
+							{role.name && (
+								<>
+									<span className='col-span-3 md:col-span-8'>
+										<span className='text-lg font-bold'>
+											<LinkHandler type={"tv"} id={role.id} name={role.name} />
+										</span>
+										{role.character && (
+											<span className='font-thin text-slate-400'>
+												{role.episode_count > 0 && (
+													<>
+														{" "}
+														{role.episode_count}{" "}
+														{`${role.episode_count === 1 ? "Episode" : "Episodes"}`}
+													</>
+												)}{" "}
+												as <span className='text-slate-300'>{role.character}</span>
+											</span>
+										)}
+									</span>
+								</>
+							)}
+						</div>
+					))}
+			</div>
+		</>
+	);
+};
+
+const CrewList = ({ filter, setFilter, person }) => {
+	return (
+		<>
+			<div className='absolute right-0 w-24 text-center'>
+				<Dropdown
+					setFilter={setFilter}
+					filter={filter}
+					options={[
+						"all",
+						...person.combined_credits.crew
+							.filter((value, index, self) => {
+								return self.findIndex((v) => v.department === value.department) === index;
+							})
+							.map((crew) => crew.department),
+					]}
+				/>
+			</div>
+
+			<h2 className='mb-2 text-2xl font-semibold first-letter:uppercase'>{filter}</h2>
+			<div className='mb-2 divide-y border border-slate-300 shadow-lg'>
+				{person.combined_credits.crew
+					.sort((a, b) => {
+						//sort based on date, if no date is available then move the title to the top
+						if (a.first_air_date && b.first_air_date)
+							return a.first_air_date.localeCompare(b.first_air_date);
+						if (a.release_date && b.first_air_date)
+							return a.release_date.localeCompare(b.first_air_date);
+						if (a.first_air_date && b.release_date)
+							return a.first_air_date.localeCompare(b.release_date);
+						if (a.release_date && b.release_date)
+							return a.release_date.localeCompare(b.release_date);
+						if (!a.release_date && !a.first_air_date) return 1;
+						if (!b.release_date && !b.first_air_date) return -1;
+					})
+					.reverse()
+					.filter((item) => {
+						if (filter === "all") return true;
+						else return item.department === filter;
+					})
+					.map((role) => (
+						<div
+							className='grid grid-cols-4 py-4 pr-2 md:grid-cols-9'
+							key={role.credit_id}
+						>
+							{role.first_air_date || role.release_date ? (
+								<span className='px-2 text-center'>
+									{role.first_air_date?.slice(0, 4) || role.release_date?.slice(0, 4)}{" "}
+								</span>
+							) : (
+								<span className='text-center'>—</span>
+							)}
+							{role.title && (
+								<>
+									<span className='col-span-3 md:col-span-8'>
+										<span className='text-lg font-bold'>
+											<LinkHandler type={"movie"} id={role.id} name={role.title} />
+										</span>
+										{role.job && <span className='font-thin'> ...{role.job}</span>}
+									</span>
+								</>
+							)}
+							{role.name && (
+								<>
+									<span className='col-span-3 md:col-span-8'>
+										<span className='text-lg font-bold'>
+											<LinkHandler type={"tv"} id={role.id} name={role.name} />
+										</span>
+										{role.job && <span className='font-thin'> ...{role.job}</span>}
+									</span>
+								</>
+							)}
+						</div>
+					))}
+			</div>
+		</>
 	);
 };

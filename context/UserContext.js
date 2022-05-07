@@ -13,7 +13,7 @@ const UserContextProvider = (props) => {
 
 	useEffect(() => {
 		const user = localStorage.getItem("user");
-		console.log(user ? JSON.parse(user) : null);
+		// console.log(user ? JSON.parse(user) : null);
 		setCurrentUser(user ? JSON.parse(user) : null);
 	}, []);
 	// useEffect(() => {}, []);

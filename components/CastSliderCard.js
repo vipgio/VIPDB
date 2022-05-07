@@ -47,7 +47,8 @@ const CastSliderCard = ({ person }) => {
 							{person.roles[0].character}
 						</span>
 						<div className='text-sm text-slate-300'>
-							{person.total_episode_count} episodes
+							{person.total_episode_count}{" "}
+							{`${person.total_episode_count === 1 ? "Episode" : "Episodes"}`}
 						</div>
 					</>
 				)}
