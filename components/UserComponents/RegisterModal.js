@@ -19,7 +19,7 @@ const RegisterModal = ({ closeModal, setModalType }) => {
 				<div>
 					<div className='flex w-full'>
 						<div className='mx-auto text-[0]'>
-							<Image src={logo} width={50} height={50} />
+							<Image src={logo} width={50} height={50} alt='VIPDB Logo' />
 						</div>
 					</div>
 					<h2 className='mt-2 text-center text-3xl font-extrabold text-gray-900'>

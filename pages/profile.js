@@ -43,6 +43,7 @@ export default function Profile() {
 														placeholder='blur'
 														src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${item.poster_path}`}
 														blurDataURL={`https://image.tmdb.org/t/p/w94_and_h141_bestv2${item.poster_path}`}
+														alt={item.title}
 													/>
 												}
 											/>
