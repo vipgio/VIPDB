@@ -2,6 +2,7 @@ import Meta from "../components/Meta";
 import TitleSlider from "../HOC/TitleSlider";
 import { server } from "../HOC/config";
 import axios from "axios";
+
 export default function Home({ trends }) {
 	return (
 		<div className='p-1'>
@@ -22,7 +23,6 @@ export async function getStaticProps() {
 	const options = {
 		method: "GET",
 		url: `${server}/api/trending`,
-		// url: `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.TMDB_KEY}`,
 	};
 	const res = await axios.request(options);
 	const trends = res.data;

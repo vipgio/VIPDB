@@ -16,7 +16,7 @@ import { UserContext } from "../../../context/UserContext";
 import { server } from "../../../HOC/config";
 const axios = require("axios").default;
 
-const Movie = () => {
+const Movie = ({ trend }) => {
 	const { currentUser } = useContext(UserContext);
 
 	const router = useRouter();
@@ -70,7 +70,10 @@ const Movie = () => {
 					{currentUser ? (
 						<Bookmark currentTitle={currentTitle} />
 					) : (
-						<div>login to review</div>
+						<>
+							{trend && <span>{trend.title}</span>}
+							<div>login to review</div>
+						</>
 					)}
 				</div>
 				<section className='w-full sm:w-3/4 sm:pl-6'>
@@ -117,20 +120,20 @@ const Movie = () => {
 
 export default Movie;
 
-// export async function getStaticPaths() {
-// 	const res = await fetch(`${server}/api/trending`);
-// 	const trends = await res.json();
-// 	console.log(trends);
-// 	const paths = trends.results.map((trend) => ({
-// 		params: { id: trend.id.toString() },
-// 	}));
+export async function getStaticPaths() {
+	const res = await fetch(`${server}/api/trending`);
+	const trends = await res.json();
+	console.log(trends);
+	const paths = trends.results.map((trend) => ({
+		params: { id: trend.id.toString() },
+	}));
 
-// 	return { paths, fallback: true };
-// }
+	return { paths, fallback: true };
+}
 
-// export async function getStaticProps({ params }) {
-// 	const res = await fetch(`${server}/api/movie/${params.id}`);
-// 	const trend = await res.json();
+export async function getStaticProps({ params }) {
+	const res = await fetch(`${server}/api/movie/${params.id}`);
+	const trend = await res.json();
 
-// 	return { props: { trend } };
-// }
+	return { props: { trend } };
+}
