@@ -16,7 +16,7 @@ import { UserContext } from "../../../context/UserContext";
 import { server } from "../../../HOC/config";
 const axios = require("axios").default;
 
-const Movie = ({ trend }) => {
+const Movie = ({ movie }) => {
 	const { currentUser } = useContext(UserContext);
 
 	const router = useRouter();
@@ -24,7 +24,7 @@ const Movie = ({ trend }) => {
 	const [is404, setIs404] = useState(false);
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
 	const query = router.query;
-	// console.log(trend);
+
 	useEffect(async () => {
 		if (query.id) {
 			if (String(currentTitle.id) === query.id.slice(0, query.id.search(/[-]/g))) {
@@ -71,7 +71,7 @@ const Movie = ({ trend }) => {
 						<Bookmark currentTitle={currentTitle} />
 					) : (
 						<>
-							{trend && <span>{trend.title}</span>}
+							{movie && <span>{movie.title}</span>}
 							<div>login to review</div>
 						</>
 					)}
@@ -128,12 +128,12 @@ export async function getStaticPaths() {
 		params: { id: trend.id.toString() },
 	}));
 
-	return { paths, fallback: true };
+	return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
 	const res = await fetch(`${server}/api/movie/${params.id}`);
-	const trend = await res.json();
+	const movie = await res.json();
 
-	return { props: { trend } };
+	return { props: { movie } };
 }
