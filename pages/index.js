@@ -34,11 +34,11 @@ export default function Home({ trends }) {
 }
 
 export async function getStaticProps() {
-	const res = await fetch(
+	const trends = await fetch(
 		// `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.TMDB_KEY}`
 		`${server}/api/trending`
 	);
-	const trends = await res.json();
+	// const trends = await res.json();
 
 	return {
 		props: {
