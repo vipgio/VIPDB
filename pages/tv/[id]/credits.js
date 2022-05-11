@@ -5,7 +5,8 @@ import { TitleContext } from "../../../context/TitleContext";
 import Link from "next/link";
 const axios = require("axios").default;
 import { PersonProfileImage } from "../../../components/PersonProfileImage";
-import { PersonNameLink } from "../../../components/PersonNameLink";
+import { LinkHandler } from "../../../HOC/LinkHandler";
+import { ImageWrapper } from "../../../HOC/ImageWrapper";
 
 const Credtis = () => {
 	const router = useRouter();
@@ -78,10 +79,27 @@ const Credtis = () => {
 						: `(${currentTitle.first_air_date.slice(0, 4)})`
 				} - Credits | VIPDB`}
 			/>
-			<div className='my-2'>
-				<Link href={`/tv/${query.id}`}>
-					<a>&larr; Back</a>
-				</Link>
+			<div className='relative mt-4 flex items-center'>
+				<div className='h-32 w-full bg-slate-600'></div>
+				<div className='absolute ml-4 flex'>
+					<div className='relative h-24 w-16 overflow-hidden rounded-md border border-slate-300'>
+						<ImageWrapper src={currentTitle.poster_path} />
+					</div>
+
+					<div className='ml-4 flex flex-col text-3xl font-semibold'>
+						<div>
+							{currentTitle.name}{" "}
+							<span className='font-normal'>
+								({currentTitle.first_air_date.slice(0, 4)})
+							</span>
+						</div>
+						<div className='mt-3 text-base'>
+							<Link href={`/tv/${query.id}`}>
+								<a className='hover:text-sky-400'>&larr; Back</a>
+							</Link>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div className='ml-2 mb-4 grid grid-cols-2 pt-2 text-3xl text-slate-200'>
 				<div>
@@ -107,7 +125,12 @@ const Credtis = () => {
 						<div key={person.id + person.name} className='shaodw-xl m-2 flex h-fit py-2'>
 							<PersonProfileImage person={person} />
 							<div>
-								<PersonNameLink person={person} />
+								<LinkHandler
+									name={person.name}
+									id={person.id}
+									type='person'
+									style={`text-lg`}
+								/>
 								<div className='text-sm text-slate-200'>
 									{person.roles.map((role) => (
 										<div key={role.credit_id + role.character}>
@@ -137,7 +160,7 @@ const Credtis = () => {
 					{!currentTitle.aggregate_credits.crew.length && (
 						<div>There are no crew records added to {currentTitle.name}.</div>
 					)}
-					{/* {departments
+					{departments
 						.sort((a, b) => a.name.localeCompare(b.name))
 						.map((department) => (
 							<div className='mb-6 ml-2' key={department.id + department.name}>
@@ -177,7 +200,7 @@ const Credtis = () => {
 										</div>
 									))}
 							</div>
-						))} */}
+						))}
 				</div>
 			</section>
 		</>

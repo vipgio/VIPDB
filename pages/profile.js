@@ -4,6 +4,7 @@ import Image from "next/image";
 import Meta from "../components/Meta";
 import Link from "next/link";
 import Bookmark from "../components/Bookmark";
+import { LinkHandler } from "../HOC/LinkHandler";
 export default function Profile() {
 	const { currentUser, isLoading } = useContext(UserContext);
 	if (isLoading) return <div>Loading...</div>;
@@ -24,29 +25,27 @@ export default function Profile() {
 						<div className='grid grid-cols-3 sm:grid-cols-5'>
 							{currentUser.user_metadata.watchlist
 								.sort((a, b) => b.dateAdded.localeCompare(a.dateAdded))
-								.map((movie) => (
-									<div key={movie.id} className='m-2 overflow-hidden rounded-md lg:m-5'>
+								.map((item) => (
+									<div key={item.id} className='m-2 overflow-hidden rounded-md lg:m-5'>
 										<div className='group relative text-[0]'>
 											<div className='absolute bottom-0 z-10 hidden h-[13%] w-full items-center bg-slate-500 bg-opacity-80 group-hover:flex'>
-												<Bookmark currentTitle={movie} />
+												<Bookmark currentTitle={item} />
 											</div>
-											<Link
-												href={`/${movie.type}/${movie.id}-${`${movie.title}`
-													.toLowerCase()
-													.replace(/[ ]/g, "-")
-													.replace(/[,:;'.]/g, "")}`}
-											>
-												<a>
+											<LinkHandler
+												type={item.type}
+												id={item.id}
+												name={item.title}
+												component={
 													<Image
 														width={600}
 														height={900}
 														quality={80}
 														placeholder='blur'
-														src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
-														blurDataURL={`https://image.tmdb.org/t/p/w94_and_h141_bestv2${movie.poster_path}`}
+														src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${item.poster_path}`}
+														blurDataURL={`https://image.tmdb.org/t/p/w94_and_h141_bestv2${item.poster_path}`}
 													/>
-												</a>
-											</Link>
+												}
+											/>
 										</div>
 									</div>
 								))}

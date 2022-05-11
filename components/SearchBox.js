@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useState, useCallback } from "react";
 import { NavbarSearchResults } from "./NavbarSearchResults";
 const axios = require("axios").default;
 
@@ -6,8 +7,27 @@ const SearchBox = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchRes, setSearchRes] = useState(null);
 	const [isSearching, setIsSearching] = useState(true);
+	const router = useRouter();
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		router.push(`/search?q=${searchQuery}`);
+		setSearchRes(null);
+		setSearchQuery("");
+	};
+	const debounce = (func) => {
+		let timer;
+		return (args) => {
+			if (timer) clearTimeout(timer);
+			timer = setTimeout(() => {
+				timer = null;
+				func(args);
+			}, 1000);
+		};
+	};
+
 	const search = (query) => {
-		if (searchQuery) {
+		if (query) {
 			setIsSearching(true);
 			const options = {
 				method: "GET",
@@ -17,29 +37,34 @@ const SearchBox = () => {
 			axios
 				.request(options)
 				.then((response) => {
-					console.log(response);
 					setSearchRes(response.data);
+					setIsSearching(false);
 				})
 				.catch((error) => {
 					console.error(error);
+					setIsSearching(false);
 				});
-			setIsSearching(false);
 		}
 	};
+
+	const handleSearch = useCallback(debounce(search), []);
+
 	return (
 		<div className='flex items-center'>
-			<input
-				type='text'
-				placeholder='Enter a movie, tv show, person...'
-				value={searchQuery}
-				onChange={(e) => {
-					setSearchQuery(e.target.value);
-					search(e.target.value);
-				}}
-				className={`${
-					searchQuery ? "w-[250px]" : "w-[35px]"
-				} relative rounded-full p-2 pr-8 text-slate-800 transition-all duration-700 ease-in-out hover:w-[250px] focus:w-[250px] focus:outline-sky-400`}
-			/>
+			<form onSubmit={handleSubmit}>
+				<input
+					type='text'
+					placeholder='Enter a movie, tv show, person...'
+					value={searchQuery}
+					onChange={(e) => {
+						setSearchQuery(e.target.value);
+						handleSearch(e.target.value);
+					}}
+					className={`${
+						searchQuery ? "w-[250px]" : "w-[35px]"
+					} relative rounded-full p-2 pr-8 text-slate-800 transition-all duration-700 ease-in-out hover:w-[250px] focus:w-[250px] focus:outline-sky-400`}
+				/>
+			</form>
 
 			{searchQuery ? (
 				<>
@@ -59,8 +84,10 @@ const SearchBox = () => {
 							d='M6 18L18 6M6 6l12 12'
 						/>
 					</svg>
-					<div className='absolute top-11 z-10 max-h-80 overflow-hidden'>
-						{searchRes && searchQuery && <NavbarSearchResults data={searchRes} />}
+					<div className='absolute top-14 z-10'>
+						{searchRes && searchQuery && (
+							<NavbarSearchResults props={{ searchRes, setSearchQuery, setSearchRes }} />
+						)}
 					</div>
 				</>
 			) : (

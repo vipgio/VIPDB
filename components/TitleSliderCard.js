@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { LinkHandler } from "../HOC/LinkHandler";
 import blankImage from "./nullPic.jpg";
 const TitleSliderCard = ({ item, type }) => {
 	const [tvDetails, setTvDetails] = useState({});
@@ -28,15 +29,11 @@ const TitleSliderCard = ({ item, type }) => {
 	return (
 		<li className='relative mx-4 flex w-60 min-w-[150px] max-w-[150px] snap-center flex-col overflow-hidden rounded-md shadow-lg'>
 			<div className='text-[0]'>
-				<Link
-					href={`/${type === "movie" ? "movie" : "tv"}/${item.id}-${`${
-						type === "movie" ? item.title : item.name
-					}`
-						.toLowerCase()
-						.replace(/[ ]/g, "-")
-						.replace(/[,:;'.]/g, "")}`}
-				>
-					<a>
+				<LinkHandler
+					type={type}
+					id={item.id}
+					name={item.title || item.name}
+					component={
 						<Image
 							src={
 								item.poster_path
@@ -48,44 +45,46 @@ const TitleSliderCard = ({ item, type }) => {
 							placeholder='blur'
 							blurDataURL={`https://www.themoviedb.org/t/p/w94_and_h141_bestv2${item.poster_path}`}
 						/>
-					</a>
-				</Link>
+					}
+				/>
 			</div>
 			<div className='mx-1 max-h-80 overflow-auto p-1'>
 				{type === "movie" ? (
-					<Link
-						href={`/movie/${item.id}-${item.title
-							.toLowerCase()
-							.replace(/[ ]/g, "-")
-							.replace(/[,:;'.]/g, "")}`}
-					>
-						<a className='group'>
-							<span className='font-bold text-slate-200 group-hover:text-sky-400'>
-								{item.title}{" "}
-							</span>
-							{item.release_date && (
-								<span className='text-slate-300 group-hover:text-sky-400'>
-									({item.release_date.slice(0, 4)})
+					<LinkHandler
+						type='movie'
+						id={item.id}
+						name={item.title}
+						component={
+							<>
+								<span className='font-bold text-slate-200 group-hover:text-sky-400'>
+									{item.title}{" "}
 								</span>
-							)}
-						</a>
-					</Link>
+								{item.release_date && (
+									<span className='text-slate-300 group-hover:text-sky-400'>
+										({item.release_date.slice(0, 4)})
+									</span>
+								)}
+							</>
+						}
+						style='group'
+					/>
 				) : (
-					<Link
-						href={`/tv/${item.id}-${item.name
-							.toLowerCase()
-							.replace(/[ ]/g, "-")
-							.replace(/[,:;'.]/g, "")}`}
-					>
-						<a className='group'>
-							<span className='font-bold group-hover:text-sky-400'>{item.name} </span>
-							<span className='text-slate-300 group-hover:text-sky-400'>
-								{isFetching
-									? `(${item.first_air_date.slice(0, 4)}-)`
-									: tvDetails.dateFormat}
-							</span>
-						</a>
-					</Link>
+					<LinkHandler
+						type='tv'
+						id={item.id}
+						name={item.name}
+						component={
+							<>
+								<span className='font-bold group-hover:text-sky-400'>{item.name} </span>
+								<span className='text-slate-300 group-hover:text-sky-400'>
+									{isFetching
+										? `(${item.first_air_date.slice(0, 4)}-)`
+										: tvDetails.dateFormat}
+								</span>
+							</>
+						}
+						style='group'
+					/>
 				)}
 			</div>
 		</li>

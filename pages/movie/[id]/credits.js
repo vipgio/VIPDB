@@ -2,9 +2,12 @@ import { useRouter } from "next/router";
 import Meta from "../../../components/Meta";
 import { useContext, useEffect, useState } from "react";
 import { TitleContext } from "../../../context/TitleContext";
+import TitleSliderCard from "../../../components/TitleSliderCard";
 import Link from "next/link";
 import { PersonProfileImage } from "../../../components/PersonProfileImage";
-import { PersonNameLink } from "../../../components/PersonNameLink";
+import { LinkHandler } from "../../../HOC/LinkHandler";
+import { ImageWrapper } from "../../../HOC/ImageWrapper";
+import Image from "next/image";
 const axios = require("axios").default;
 
 const Credtis = () => {
@@ -12,7 +15,6 @@ const Credtis = () => {
 	const query = router.query;
 	const [isLoading, setIsLoading] = useState(true);
 	const [lazyLimit, setLazyLimit] = useState(30);
-	const [is404, setIs404] = useState(false);
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
 	const [departments, setDepartments] = useState([]);
 
@@ -69,13 +71,28 @@ const Credtis = () => {
 					4
 				)}) - Credits | VIPDB`}
 			/>
+			<div className='relative mt-4 flex items-center'>
+				<div className='h-32 w-full bg-slate-600'></div>
+				<div className='absolute ml-4 flex'>
+					<div className='relative h-24 w-16 overflow-hidden rounded-md border border-slate-300'>
+						<ImageWrapper src={currentTitle.poster_path} />
+					</div>
 
-			<div className='my-2'>
-				<Link href={`/movie/${query.id}`}>
-					<a className='hover:text-sky-400'>&larr; Back</a>
-				</Link>
+					<div className='ml-4 flex flex-col text-3xl font-semibold'>
+						<div>
+							{currentTitle.title}{" "}
+							<span className='font-normal'>
+								({currentTitle.release_date.slice(0, 4)})
+							</span>
+						</div>
+						<div className='mt-3 text-base'>
+							<Link href={`/movie/${query.id}`}>
+								<a className='hover:text-sky-400'>&larr; Back</a>
+							</Link>
+						</div>
+					</div>
+				</div>
 			</div>
-
 			<div className='ml-2 mb-4 grid grid-cols-2 pt-2 text-3xl text-slate-200'>
 				<div>
 					<span>Cast </span>
@@ -101,7 +118,12 @@ const Credtis = () => {
 						<div key={person.id} className='shaodw-xl m-2 flex h-fit py-2'>
 							<PersonProfileImage person={person} />
 							<div>
-								<PersonNameLink person={person} />
+								<LinkHandler
+									name={person.name}
+									id={person.id}
+									type='person'
+									style={`text-lg`}
+								/>
 								<div className='text-sm text-slate-200'>{person.character}</div>
 							</div>
 						</div>
@@ -119,18 +141,21 @@ const Credtis = () => {
 				<div>
 					{departments
 						.sort((a, b) => a.name.localeCompare(b.name))
-						.map((department, i) => (
+						.map((department) => (
 							<div className='mb-6 ml-2' key={department.id + department.name}>
-								<div className='text-xl'>
-									{department.name} {i}
-								</div>
+								<div className='text-xl'>{department.name}</div>
 								{currentTitle.credits.crew
 									.filter((crew) => crew.department === department.name)
 									.map((person) => (
 										<div className='my-2 flex py-2' key={person.id + person.job}>
 											<PersonProfileImage person={person} />
 											<div>
-												<PersonNameLink person={person} />
+												<LinkHandler
+													name={person.name}
+													id={person.id}
+													type='person'
+													style={`text-lg`}
+												/>
 												<div className='text-sm'>{person.job}</div>
 											</div>
 										</div>

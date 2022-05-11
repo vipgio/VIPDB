@@ -6,22 +6,14 @@ export const PersonTitlesList = ({ person }) => {
 	return (
 		<div className='relative'>
 			{person.known_for_department === "Acting" ? (
-				<ActorList filter={filter} setFilter={setFilter} person={person} />
+				<ActorList props={{ filter, setFilter, person }} />
 			) : (
-				<CrewList filter={filter} setFilter={setFilter} person={person} />
+				<CrewList props={{ filter, setFilter, person }} />
 			)}
 		</div>
 	);
 };
-// a.first_air_date && b.first_air_date
-// 	? a.first_air_date.localeCompare(b.first_air_date)
-// 	: a.release_date && b.first_air_date
-// 	? a.release_date.localeCompare(b.first_air_date)
-// 	: a.first_air_date && b.release_date
-// 	? a.first_air_date.localeCompare(b.release_date)
-// 	: a.release_date && b.release_date
-// 	? a.release_date.localeCompare(b.release_date)
-// 	: null;
+
 const Dropdown = ({ setFilter, filter, options }) => {
 	return (
 		<div className='group'>
@@ -43,19 +35,19 @@ const Dropdown = ({ setFilter, filter, options }) => {
 	);
 };
 
-const ActorList = ({ filter, setFilter, person }) => {
+const ActorList = ({ props }) => {
 	return (
 		<>
 			<div className='absolute right-0 w-24 text-center'>
 				<Dropdown
-					setFilter={setFilter}
-					filter={filter}
+					setFilter={props.setFilter}
+					filter={props.filter}
 					options={["all", "movie", "tv"]}
 				/>
 			</div>
 			<h2 className='mb-2 text-2xl font-semibold'>Acting</h2>
 			<div className='mb-2 divide-y border border-slate-300 shadow-lg'>
-				{person.combined_credits.cast
+				{props.person.combined_credits.cast
 					.sort((a, b) => {
 						//sort based on date, if no date is available then move the title to the top
 						if (a.first_air_date && b.first_air_date)
@@ -71,9 +63,9 @@ const ActorList = ({ filter, setFilter, person }) => {
 					})
 					.reverse()
 					.filter((item) => {
-						if (filter === "all") return true;
-						if (filter === "movie" && item.title) return true;
-						if (filter === "tv" && item.name) return true;
+						if (props.filter === "all") return true;
+						if (props.filter === "movie" && item.title) return true;
+						if (props.filter === "tv" && item.name) return true;
 					})
 					.map((role) => (
 						<div
@@ -130,16 +122,16 @@ const ActorList = ({ filter, setFilter, person }) => {
 	);
 };
 
-const CrewList = ({ filter, setFilter, person }) => {
+const CrewList = ({ props }) => {
 	return (
 		<>
 			<div className='absolute right-0 w-24 text-center'>
 				<Dropdown
-					setFilter={setFilter}
-					filter={filter}
+					setFilter={props.setFilter}
+					filter={props.filter}
 					options={[
 						"all",
-						...person.combined_credits.crew
+						...props.person.combined_credits.crew
 							.filter((value, index, self) => {
 								return self.findIndex((v) => v.department === value.department) === index;
 							})
@@ -148,9 +140,11 @@ const CrewList = ({ filter, setFilter, person }) => {
 				/>
 			</div>
 
-			<h2 className='mb-2 text-2xl font-semibold first-letter:uppercase'>{filter}</h2>
+			<h2 className='mb-2 text-2xl font-semibold first-letter:uppercase'>
+				{props.filter}
+			</h2>
 			<div className='mb-2 divide-y border border-slate-300 shadow-lg'>
-				{person.combined_credits.crew
+				{props.person.combined_credits.crew
 					.sort((a, b) => {
 						//sort based on date, if no date is available then move the title to the top
 						if (a.first_air_date && b.first_air_date)
@@ -166,8 +160,8 @@ const CrewList = ({ filter, setFilter, person }) => {
 					})
 					.reverse()
 					.filter((item) => {
-						if (filter === "all") return true;
-						else return item.department === filter;
+						if (props.filter === "all") return true;
+						else return item.department === props.filter;
 					})
 					.map((role) => (
 						<div
@@ -185,7 +179,12 @@ const CrewList = ({ filter, setFilter, person }) => {
 								<>
 									<span className='col-span-3 md:col-span-8'>
 										<span className='text-lg font-bold'>
-											<LinkHandler type={"movie"} id={role.id} name={role.title} />
+											<LinkHandler
+												type={"movie"}
+												id={role.id}
+												name={role.title}
+												component={role.title}
+											/>
 										</span>
 										{role.job && <span className='font-thin'> ...{role.job}</span>}
 									</span>

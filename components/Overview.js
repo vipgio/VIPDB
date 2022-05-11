@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useEffect } from "react";
+import { LinkHandler } from "../HOC/LinkHandler";
 import DetailsBox from "./DetailsBox";
 const Overview = ({ currentTitle }) => {
 	return (
@@ -19,15 +20,7 @@ const Overview = ({ currentTitle }) => {
 								{currentTitle.genres.map((genre, index) => (
 									<span className='mr-1' key={genre.id}>
 										<>
-											{
-												<Link
-													href={`/movies/genre/${genre.name
-														.toLowerCase()
-														.replace(/[ ]/g, "-")}`}
-												>
-													<a className='link'>{genre.name}</a>
-												</Link>
-											}
+											<LinkHandler name={genre.name} type={`movies/genre`} />
 											{index === currentTitle.genres.length - 1 ? "" : ", "}
 										</>
 									</span>
@@ -66,16 +59,11 @@ const Overview = ({ currentTitle }) => {
 										.map((director, index) => (
 											<span key={director.id}>
 												{index === 0 ? "" : ", "}
-												{
-													<Link
-														href={`/person/${director.id}-${director.name
-															.toLowerCase()
-															.replace(/[ ]/g, "-")
-															.replace(/[,:;'.]/g, "")}`}
-													>
-														<a className='link'>{director.name}</a>
-													</Link>
-												}
+												<LinkHandler
+													type='person'
+													id={director.id}
+													name={director.name}
+												/>
 											</span>
 										))}
 								</h2>
@@ -103,21 +91,11 @@ const Overview = ({ currentTitle }) => {
 								: `(${currentTitle.first_air_date.slice(0, 4)})`}
 						</span>
 					</h1>
-					<div className='flex'>
+					<div className='mt-2 flex'>
 						{currentTitle.genres.map((genre, index) => (
 							<span className='mr-1' key={genre.id}>
-								<>
-									{
-										<Link
-											href={`/tv/genre/${genre.id}-${genre.name
-												.toLowerCase()
-												.replace(" & ", "-")}`}
-										>
-											<a className='hover:text-sky-400'>{genre.name}</a>
-										</Link>
-									}
-									{index === currentTitle.genres.length - 1 ? "" : ", "}
-								</>
+								{<LinkHandler name={genre.name} type={`tv/genre`} />}
+								{index === currentTitle.genres.length - 1 ? "" : ", "}
 							</span>
 						))}
 						<span className='ml-3'>&#8226;</span>
@@ -137,15 +115,7 @@ const Overview = ({ currentTitle }) => {
 							{currentTitle.created_by.map((director, index) => (
 								<span key={director.id}>
 									{index === 0 ? "" : ", "}
-									{
-										<Link
-											href={`/person/${director.id}-${director.name
-												.toLowerCase()
-												.replace(/[ ]/g, "-")}`}
-										>
-											<a className='hover:text-sky-400'>{director.name}</a>
-										</Link>
-									}
+									<LinkHandler type='person' id={director.id} name={director.name} />
 								</span>
 							))}
 						</h2>
