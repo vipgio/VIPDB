@@ -13,10 +13,10 @@ import Trailer from "../../../HOC/Trailer";
 import SkeletonTitles from "../../../components/SkeletonTitles";
 import { TitleContext } from "../../../context/TitleContext";
 import { UserContext } from "../../../context/UserContext";
-
+import { server } from "../../../HOC/config";
 const axios = require("axios").default;
 
-const Movie = () => {
+const Movie = ({ trend }) => {
 	const { currentUser } = useContext(UserContext);
 
 	const router = useRouter();
@@ -24,17 +24,12 @@ const Movie = () => {
 	const [is404, setIs404] = useState(false);
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
 	const query = router.query;
-
+	// console.log(trend);
 	useEffect(async () => {
 		if (query.id) {
-			// console.log("current id ", String(currentTitle.id));
-			// console.log("query id ", query.id.slice(0, query.id.search(/[-]/g)));
 			if (String(currentTitle.id) === query.id.slice(0, query.id.search(/[-]/g))) {
 				setIsLoading(false);
 			} else {
-				// const test = await fetch(`/api/movie/${query.id}`);
-				// const aaa = await test.json();
-				// console.log(aaa);
 				const options = {
 					method: "GET",
 					url: `/api/movie/${
@@ -46,7 +41,7 @@ const Movie = () => {
 				try {
 					const data = await axios.request(options);
 					setCurrentTitle(data.data);
-					console.log(data.data);
+					// console.log(data.data);
 				} catch (error) {
 					console.log(error);
 					setIs404(true);
@@ -55,6 +50,7 @@ const Movie = () => {
 			}
 		}
 	}, [query]);
+
 	return isLoading ? (
 		<SkeletonTitles /> //loading template here
 	) : !is404 ? (
@@ -79,31 +75,30 @@ const Movie = () => {
 				</div>
 				<section className='w-full sm:w-3/4 sm:pl-6'>
 					<Overview currentTitle={currentTitle} /> {/*title, runtime, release, overview*/}
+					{trend.title}
 					<div>
-						<div>
-							{currentTitle.videos.results.filter(
-								(video) => video.official && video.type === "Trailer"
-							).length > 0 && (
-								<Trailer
-									trailer={
-										currentTitle.videos.results.filter(
-											(video) => video.official && video.type === "Trailer"
-											// &&
-											// (video.name === "Official Trailer" ||
-											// 	video.name === "Main Trailer")
-										)[0]
-									}
-									key={
-										currentTitle.videos.results.filter(
-											(video) => video.official && video.type === "Trailer"
-											// &&
-											// (video.name === "Official Trailer" ||
-											// 	video.name === "Main Trailer")
-										)[0].id
-									}
-								/>
-							)}
-						</div>
+						{currentTitle.videos.results.filter(
+							(video) => video.official && video.type === "Trailer"
+						).length > 0 && (
+							<Trailer
+								trailer={
+									currentTitle.videos.results.filter(
+										(video) => video.official && video.type === "Trailer"
+										// &&
+										// (video.name === "Official Trailer" ||
+										// 	video.name === "Main Trailer")
+									)[0]
+								}
+								key={
+									currentTitle.videos.results.filter(
+										(video) => video.official && video.type === "Trailer"
+										// &&
+										// (video.name === "Official Trailer" ||
+										// 	video.name === "Main Trailer")
+									)[0].id
+								}
+							/>
+						)}
 					</div>
 				</section>
 				{/* <div className='bg-slate-600'>
@@ -122,3 +117,21 @@ const Movie = () => {
 };
 
 export default Movie;
+
+export async function getStaticPaths() {
+	const res = await fetch(`${server}/api/trending`);
+	const trends = await res.json();
+	console.log(trends);
+	const paths = trends.results.map((trend) => ({
+		params: { id: trend.id.toString() },
+	}));
+
+	return { paths, fallback: true };
+}
+
+export async function getStaticProps({ params }) {
+	const res = await fetch(`${server}/api/movie/${params.id}`);
+	const trend = await res.json();
+
+	return { props: { trend } };
+}

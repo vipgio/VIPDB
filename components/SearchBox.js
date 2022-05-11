@@ -11,7 +11,11 @@ const SearchBox = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		router.push(`/search?q=${searchQuery}`);
+		console.log(searchRes);
+		router.push({
+			pathname: "/search",
+			query: { q: `${searchQuery}` },
+		});
 		setSearchRes(null);
 		setSearchQuery("");
 	};

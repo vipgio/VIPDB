@@ -1,7 +1,6 @@
 import TitleSliderCard from "../components/TitleSliderCard";
 
 const TitleSlider = ({ items }) => {
-	console.log(items);
 	return (
 		<div className='my-2 mb-10 flex h-fit max-w-screen-2xl rounded-xl'>
 			{/* <div className='z-10 -mr-[46px] h-full w-12 rounded-xl bg-gradient-to-r from-white opacity-30'></div> */}

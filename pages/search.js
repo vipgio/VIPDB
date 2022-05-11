@@ -5,23 +5,19 @@ import { useRouter } from "next/router";
 const axios = require("axios").default;
 
 const Search = () => {
-	const [searchQuery, setSearchQuery] = useState("");
+	const router = useRouter();
+	const query = router.query;
+	const [searchQuery, setSearchQuery] = useState(query.q || "");
 	const [searchRes, setSearchRes] = useState(null);
 	const [isSearching, setIsSearching] = useState(false);
-	const router = useRouter();
 
 	useEffect(() => {
-		if (router) {
-			console.log(router.query.q);
-			setSearchQuery(router.query.q);
-			search(router.query.q);
+		/^\s*$/.test(searchQuery) && setSearchQuery(""); // string only includes whitespace
+		if (searchQuery.length > 0) {
+			router.push(`/search?q=${searchQuery}`, undefined, { shallow: true });
+			handleSearch(searchQuery);
 		}
-	}, [router]);
-
-	useEffect(() => {
-		if (searchQuery.length === 0) {
-			setSearchRes(null);
-		}
+		searchQuery.length === 0 && router.push("/search", undefined, { shallow: true }); // empty string
 	}, [searchQuery]);
 
 	const debounce = (func) => {
@@ -37,7 +33,7 @@ const Search = () => {
 
 	const search = (query) => {
 		// console.log(query);
-		if (query) {
+		if (query && !/^\s*$/.test(query)) {
 			setIsSearching(true);
 			const options = {
 				method: "GET",
@@ -47,7 +43,6 @@ const Search = () => {
 			axios
 				.request(options)
 				.then((response) => {
-					console.log(response);
 					setSearchRes(response.data);
 					setIsSearching(false);
 				})
@@ -59,6 +54,7 @@ const Search = () => {
 	};
 
 	const handleSearch = useCallback(debounce(search), []);
+
 	return (
 		<>
 			<Meta title='Search | VIPDB' />
@@ -71,14 +67,31 @@ const Search = () => {
 				>
 					<input
 						type='text'
-						placeholder='Enter a movie, tv show, person...'
+						placeholder='Enter a Movie, TV Show or Person'
 						value={searchQuery}
 						className='m-4 h-20 w-full rounded-xl px-4 text-4xl text-slate-800 outline-blue-400 duration-300'
 						onChange={(e) => {
-							handleSearch(e.target.value);
 							setSearchQuery(e.target.value);
 						}}
 					/>
+					{searchQuery && (
+						<svg
+							// close icon
+							xmlns='http://www.w3.org/2000/svg'
+							className='absolute right-6 mr-6 h-8 w-8 cursor-pointer'
+							fill='red'
+							viewBox='0 0 24 24'
+							stroke='#dc2626'
+							onClick={() => setSearchQuery("")}
+						>
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								strokeWidth={2}
+								d='M6 18L18 6M6 6l12 12'
+							/>
+						</svg>
+					)}
 				</form>
 			</div>
 

@@ -9,9 +9,7 @@ const TitleSliderCard = ({ item, type }) => {
 	useEffect(async () => {
 		if (type === "tv") {
 			setIsFetching(true);
-			const data = await fetch(
-				`https://api.themoviedb.org/3/tv/${item.id}?api_key=${process.env.TMDB_KEY}`
-			);
+			const data = await fetch(`/api/tv/${item.id}`);
 			const show = await data.json();
 			// console.log(show);
 			setTvDetails({
