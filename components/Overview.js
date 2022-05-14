@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { useEffect } from "react";
 import { LinkHandler } from "../HOC/LinkHandler";
 import DetailsBox from "./DetailsBox";
 const Overview = ({ currentTitle }) => {
@@ -20,7 +18,8 @@ const Overview = ({ currentTitle }) => {
 								{currentTitle.genres.map((genre, index) => (
 									<span className='mr-1' key={genre.id}>
 										<>
-											<LinkHandler name={genre.name} type={`movies/genre`} />
+											{/* <LinkHandler name={genre.name} type={`movies/genre`} /> */}
+											<span>{genre.name}</span>
 											{index === currentTitle.genres.length - 1 ? "" : ", "}
 										</>
 									</span>
@@ -94,7 +93,8 @@ const Overview = ({ currentTitle }) => {
 					<div className='mt-2 flex'>
 						{currentTitle.genres.map((genre, index) => (
 							<span className='mr-1' key={genre.id}>
-								{<LinkHandler name={genre.name} type={`tv/genre`} />}
+								{/* {<LinkHandler name={genre.name} type={`tv/genre`} />} */}
+								<span>{genre.name}</span>
 								{index === currentTitle.genres.length - 1 ? "" : ", "}
 							</span>
 						))}

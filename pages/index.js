@@ -4,6 +4,7 @@ import { server } from "../HOC/config";
 import axios from "axios";
 
 export default function Home({ trends }) {
+	// console.log(trends.results);
 	return (
 		<div className='p-1'>
 			<Meta title='Home | VIPDB' />

@@ -24,7 +24,7 @@ export const LoginButton = () => {
 					}}
 					className='my-button rounded-md bg-sky-600 py-2 px-4 text-slate-100 outline-sky-200 hover:bg-sky-400 focus:outline'
 				>
-					Sign In
+					Sign in
 				</button>
 			</div>
 

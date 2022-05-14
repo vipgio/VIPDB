@@ -18,34 +18,11 @@ const Credtis = () => {
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
 	const [departments, setDepartments] = useState([]);
 
-	useEffect(async () => {
-		if (currentTitle.title) {
-			setDepartments(
-				currentTitle.credits.crew
-					.filter((value, index, self) => {
-						return self.findIndex((v) => v.department === value.department) === index;
-					})
-					.map((person) => ({
-						name: person.department,
-						id: person.id,
-					}))
-			);
-			setIsLoading(false);
-		} else if (query.id) {
-			const options = {
-				method: "GET",
-				url: `/api/movie/${
-					query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
-						? query.id
-						: query.id.slice(0, query.id.search(/[-]/g))
-				}`,
-			};
-			try {
-				const data = await axios.request(options);
-				setCurrentTitle(data.data);
-				console.log(data.data);
+	useEffect(() => {
+		const fetchData = async () => {
+			if (currentTitle.title) {
 				setDepartments(
-					data.data.credits.crew
+					currentTitle.credits.crew
 						.filter((value, index, self) => {
 							return self.findIndex((v) => v.department === value.department) === index;
 						})
@@ -54,11 +31,37 @@ const Credtis = () => {
 							id: person.id,
 						}))
 				);
-			} catch (error) {
-				console.log("credits error ", error);
+				setIsLoading(false);
+			} else if (query.id) {
+				const options = {
+					method: "GET",
+					url: `/api/movie/${
+						query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
+							? query.id
+							: query.id.slice(0, query.id.search(/[-]/g))
+					}`,
+				};
+				try {
+					const data = await axios.request(options);
+					setCurrentTitle(data.data);
+					console.log(data.data);
+					setDepartments(
+						data.data.credits.crew
+							.filter((value, index, self) => {
+								return self.findIndex((v) => v.department === value.department) === index;
+							})
+							.map((person) => ({
+								name: person.department,
+								id: person.id,
+							}))
+					);
+				} catch (error) {
+					console.log("credits error ", error);
+				}
+				setIsLoading(false);
 			}
-			setIsLoading(false);
-		}
+		};
+		fetchData();
 	}, [query]);
 
 	return isLoading ? (

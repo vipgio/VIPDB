@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Meta from "../../../components/Meta";
-import Overview from "../../../components/Overview";
 import StarRating from "../../../components/StarRating";
 import TitleSlider from "../../../HOC/TitleSlider";
 import BigPoster from "../../../HOC/BigPoster";
@@ -18,26 +17,29 @@ const Person = () => {
 	const [showMore, setShowMore] = useState(false);
 	const query = router.query;
 
-	useEffect(async () => {
-		if (query.id) {
-			const options = {
-				method: "GET",
-				url: `/api/person/${
-					query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
-						? query.id
-						: query.id.slice(0, query.id.search(/[-]/g))
-				}`,
-			};
-			try {
-				const data = await axios.request(options);
-				setCurrentPerson(data.data);
-				console.log(data.data);
-			} catch (error) {
-				console.log(error);
-				setIs404(true);
+	useEffect(() => {
+		const fetchData = async () => {
+			if (query.id) {
+				const options = {
+					method: "GET",
+					url: `/api/person/${
+						query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
+							? query.id
+							: query.id.slice(0, query.id.search(/[-]/g))
+					}`,
+				};
+				try {
+					const data = await axios.request(options);
+					setCurrentPerson(data.data);
+					console.log(data.data);
+				} catch (error) {
+					console.log(error);
+					setIs404(true);
+				}
+				setIsLoading(false);
 			}
-			setIsLoading(false);
-		}
+		};
+		fetchData();
 	}, [query]);
 	return isLoading ? (
 		"loading" //loading template here

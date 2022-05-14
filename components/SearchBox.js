@@ -1,13 +1,20 @@
 import { useRouter } from "next/router";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { NavbarSearchResults } from "./NavbarSearchResults";
 const axios = require("axios").default;
 
 const SearchBox = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchRes, setSearchRes] = useState(null);
-	const [isSearching, setIsSearching] = useState(true);
+	const [isSearching, setIsSearching] = useState(false);
 	const router = useRouter();
+	const query = router.query;
+
+	useEffect(() => {
+		// clear search results when page changes
+		setSearchQuery("");
+		setSearchRes(null);
+	}, [query]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -19,6 +26,7 @@ const SearchBox = () => {
 		setSearchRes(null);
 		setSearchQuery("");
 	};
+	0;
 	const debounce = (func) => {
 		let timer;
 		return (args) => {
@@ -90,7 +98,7 @@ const SearchBox = () => {
 					</svg>
 					<div className='absolute top-14 z-10'>
 						{searchRes && searchQuery && (
-							<NavbarSearchResults props={{ searchRes, setSearchQuery, setSearchRes }} />
+							<NavbarSearchResults props={{ searchRes, isSearching }} />
 						)}
 					</div>
 				</>

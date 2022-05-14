@@ -94,7 +94,7 @@ export const Navbar = () => {
 										Profile
 									</a>
 								</Link>
-								<div className=''>
+								<div>
 									<LogoutButton />
 								</div>
 							</>

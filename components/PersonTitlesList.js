@@ -179,12 +179,7 @@ const CrewList = ({ props }) => {
 								<>
 									<span className='col-span-3 md:col-span-8'>
 										<span className='text-lg font-bold'>
-											<LinkHandler
-												type={"movie"}
-												id={role.id}
-												name={role.title}
-												component={role.title}
-											/>
+											<LinkHandler type={"movie"} id={role.id} name={role.title} />
 										</span>
 										{role.job && <span className='font-thin'> ...{role.job}</span>}
 									</span>

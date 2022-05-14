@@ -23,33 +23,44 @@ const Movie = ({ movie }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [is404, setIs404] = useState(false);
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
-	const query = router.query;
 
-	useEffect(async () => {
-		if (query.id) {
-			if (String(currentTitle.id) === query.id.slice(0, query.id.search(/[-]/g))) {
-				setIsLoading(false);
-			} else {
-				const options = {
-					method: "GET",
-					url: `/api/movie/${
-						query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
-							? query.id
-							: query.id.slice(0, query.id.search(/[-]/g))
-					}`,
-				};
-				try {
-					const data = await axios.request(options);
-					setCurrentTitle(data.data);
-					// console.log(data.data);
-				} catch (error) {
-					console.log(error);
-					setIs404(true);
-				}
-				setIsLoading(false);
-			}
+	useEffect(() => {
+		if (router.isFallback) {
+			setIsLoading(true);
+		} else {
+			setIsLoading(false);
+			movie.success === false && setIs404(true);
+			movie && setCurrentTitle(movie);
 		}
-	}, [query]);
+	}, [router]);
+
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		if (query.id) {
+	// 			if (String(currentTitle.id) === query.id.slice(0, query.id.search(/[-]/g))) {
+	// 				setIsLoading(false);
+	// 			} else {
+	// 				const options = {
+	// 					method: "GET",
+	// 					url: `/api/movie/${
+	// 						query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
+	// 							? query.id
+	// 							: query.id.slice(0, query.id.search(/[-]/g))
+	// 					}`,
+	// 				};
+	// 				try {
+	// 					const data = await axios.request(options);
+	// 					setCurrentTitle(data.data);
+	// 				} catch (error) {
+	// 					console.log(error);
+	// 					setIs404(true);
+	// 				}
+	// 				setIsLoading(false);
+	// 			}
+	// 		}
+	// 	};
+	// 	fetchData();
+	// }, [query]);
 
 	return isLoading ? (
 		<SkeletonTitles /> //loading template here
@@ -65,14 +76,12 @@ const Movie = ({ movie }) => {
 
 			<div className='mt-1 flex flex-col pt-2 sm:flex-row'>
 				<div className='flex flex-col items-center'>
-					<BigPoster path={currentTitle.poster_path} titleName={currentTitle.title} />
-
+					<BigPoster path={movie.poster_path} titleName={movie.title} />
 					{currentUser ? (
 						<Bookmark currentTitle={currentTitle} />
 					) : (
 						<>
-							{movie && <span>{movie.title}</span>}
-							<div>login to review</div>
+							<div>Sign in to review</div>
 						</>
 					)}
 				</div>
@@ -86,26 +95,17 @@ const Movie = ({ movie }) => {
 								trailer={
 									currentTitle.videos.results.filter(
 										(video) => video.official && video.type === "Trailer"
-										// &&
-										// (video.name === "Official Trailer" ||
-										// 	video.name === "Main Trailer")
 									)[0]
 								}
 								key={
 									currentTitle.videos.results.filter(
 										(video) => video.official && video.type === "Trailer"
-										// &&
-										// (video.name === "Official Trailer" ||
-										// 	video.name === "Main Trailer")
 									)[0].id
 								}
 							/>
 						)}
 					</div>
 				</section>
-				{/* <div className='bg-slate-600'>
-					<StarRating />
-				</div> */}
 			</div>
 			<CastSlider cast={currentTitle.credits.cast} />
 			{/* {is404 && <DefaultErrorPage statusCode={404} />} */}
@@ -123,17 +123,33 @@ export default Movie;
 export async function getStaticPaths() {
 	const res = await fetch(`${server}/api/trending`);
 	const trends = await res.json();
-	console.log(trends);
+
 	const paths = trends.results.map((trend) => ({
-		params: { id: trend.id.toString() },
+		params: {
+			id: `${trend.id}-${
+				trend.title &&
+				trend.title
+					.toLowerCase()
+					.replace(/[ ]/g, "-")
+					.replace(/[,:;'.]/g, "")
+			}`,
+		},
 	}));
 
-	return { paths, fallback: false };
+	return {
+		paths,
+		fallback: true,
+	};
 }
 
 export async function getStaticProps({ params }) {
-	const res = await fetch(`${server}/api/movie/${params.id}`);
+	const res = await fetch(`${server}/api/movie/${params.id.toString()}`);
 	const movie = await res.json();
 
-	return { props: { movie } };
+	return {
+		props: {
+			movie,
+		},
+		revalidate: 100,
+	};
 }

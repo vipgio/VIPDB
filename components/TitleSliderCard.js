@@ -6,23 +6,26 @@ import blankImage from "./nullPic.jpg";
 const TitleSliderCard = ({ item, type }) => {
 	const [tvDetails, setTvDetails] = useState({});
 	const [isFetching, setIsFetching] = useState(false);
-	useEffect(async () => {
-		if (type === "tv") {
-			setIsFetching(true);
-			const data = await fetch(`/api/tv/${item.id}`);
-			const show = await data.json();
-			// console.log(show);
-			setTvDetails({
-				dateFormat: show.last_air_date
-					? show.first_air_date.slice(0, 4) === show.last_air_date.slice(0, 4)
-						? `(${show.first_air_date.slice(0, 4)})`
-						: show.status === "Ended"
-						? `(${show.first_air_date.slice(0, 4)}-${show.last_air_date.slice(0, 4)})`
-						: `(${show.first_air_date.slice(0, 4)}-)`
-					: `(${show.first_air_date.slice(0, 4)})`,
-			});
-			setIsFetching(false);
-		}
+	useEffect(() => {
+		const fetchData = async () => {
+			if (type === "tv") {
+				setIsFetching(true);
+				const data = await fetch(`/api/tv/${item.id}`);
+				const show = await data.json();
+				// console.log(show);
+				setTvDetails({
+					dateFormat: show.last_air_date
+						? show.first_air_date.slice(0, 4) === show.last_air_date.slice(0, 4)
+							? `(${show.first_air_date.slice(0, 4)})`
+							: show.status === "Ended"
+							? `(${show.first_air_date.slice(0, 4)}-${show.last_air_date.slice(0, 4)})`
+							: `(${show.first_air_date.slice(0, 4)}-)`
+						: `(${show.first_air_date.slice(0, 4)})`,
+				});
+				setIsFetching(false);
+			}
+		};
+		fetchData();
 	}, []);
 	return (
 		<li className='relative mx-4 flex w-60 min-w-[150px] max-w-[150px] snap-center flex-col overflow-hidden rounded-md shadow-lg'>

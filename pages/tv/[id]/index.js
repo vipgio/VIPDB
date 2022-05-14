@@ -10,10 +10,10 @@ import Banner from "../../../HOC/Banner";
 import BigPoster from "../../../HOC/BigPoster";
 import NotFound from "../../404";
 import { UserContext } from "../../../context/UserContext";
-
+import { server } from "../../../HOC/config";
 const axios = require("axios").default;
 
-const Show = () => {
+const Show = ({ show }) => {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(true);
 	const [is404, setIs404] = useState(false);
@@ -21,31 +21,16 @@ const Show = () => {
 	const { currentTitle, setCurrentTitle } = useContext(TitleContext);
 	const query = router.query;
 
-	useEffect(async () => {
-		if (query.id) {
-			if (String(currentTitle.id) === query.id.slice(0, query.id.search(/[-]/g))) {
-				setIsLoading(false);
-			} else {
-				const options = {
-					method: "GET",
-					url: `/api/tv/${
-						query.id.search(/[-]/g) === -1 // if '-' doesn't exist, then don't slice
-							? query.id
-							: query.id.slice(0, query.id.search(/[-]/g))
-					}`,
-				};
-				try {
-					const data = await axios.request(options);
-					setCurrentTitle(data.data);
-					console.log(data.data);
-				} catch (error) {
-					console.log(error);
-					setIs404(true);
-				}
-				setIsLoading(false);
-			}
+	useEffect(() => {
+		if (router.isFallback) {
+			setIsLoading(true);
+		} else {
+			setIsLoading(false);
+			show.success === false && setIs404(true);
+			show && setCurrentTitle(show);
 		}
-	}, [query]);
+	}, [router]);
+
 	return isLoading ? (
 		"loading" //loading template here
 	) : !is404 ? (
@@ -82,7 +67,7 @@ const Show = () => {
 				</section>
 			</div>
 			<CastSlider cast={currentTitle.aggregate_credits.cast} />
-			<StarRating />
+			{/* <StarRating /> */}
 			{/* {is404 && <DefaultErrorPage statusCode={404} />} */}
 		</>
 	) : (
@@ -94,3 +79,37 @@ const Show = () => {
 };
 
 export default Show;
+
+export async function getStaticPaths() {
+	const res = await fetch(`${server}/api/trending`);
+	const trends = await res.json();
+
+	const paths = trends.results.map((trend) => ({
+		params: {
+			id: `${trend.id}-${
+				trend.name &&
+				trend.name
+					.toLowerCase()
+					.replace(/[ ]/g, "-")
+					.replace(/[,:;'.]/g, "")
+			}`,
+		},
+	}));
+
+	return {
+		paths,
+		fallback: true,
+	};
+}
+
+export async function getStaticProps({ params }) {
+	const res = await fetch(`${server}/api/tv/${params.id}`);
+	const show = await res.json();
+
+	return {
+		props: {
+			show,
+		},
+		revalidate: 100,
+	};
+}
