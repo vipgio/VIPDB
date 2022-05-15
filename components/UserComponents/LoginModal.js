@@ -13,7 +13,6 @@ const LoginModal = ({ closeModal, setModalType }) => {
 		handleLogin(email, password, closeModal);
 	};
 	const handleRecovery = (e) => {
-		console.log("email: ", email);
 		e.preventDefault();
 		recovery(email, closeModal);
 	};

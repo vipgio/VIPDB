@@ -84,17 +84,16 @@ export async function getStaticPaths() {
 	const res = await fetch(`${server}/api/trending`);
 	const trends = await res.json();
 
-	const paths = trends.results.map((trend) => ({
-		params: {
-			id: `${trend.id}-${
-				trend.name &&
-				trend.name
+	const paths = trends.results
+		.filter((item) => item.media_type === "tv")
+		.map((trend) => ({
+			params: {
+				id: `${trend.id}-${trend.name
 					.toLowerCase()
 					.replace(/[ ]/g, "-")
-					.replace(/[,:;'.]/g, "")
-			}`,
-		},
-	}));
+					.replace(/[,:;'.]/g, "")}`,
+			},
+		}));
 
 	return {
 		paths,

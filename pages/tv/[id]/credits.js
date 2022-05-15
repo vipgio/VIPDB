@@ -42,7 +42,6 @@ const Credtis = () => {
 				};
 				try {
 					const data = await axios.request(options);
-					console.log(data.data);
 					setCurrentTitle(data.data);
 					setDepartments(
 						data.data.aggregate_credits.crew

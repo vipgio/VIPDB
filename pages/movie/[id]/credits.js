@@ -44,7 +44,6 @@ const Credtis = () => {
 				try {
 					const data = await axios.request(options);
 					setCurrentTitle(data.data);
-					console.log(data.data);
 					setDepartments(
 						data.data.credits.crew
 							.filter((value, index, self) => {

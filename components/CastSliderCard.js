@@ -25,6 +25,7 @@ const CastSliderCard = ({ person }) => {
 							}
 							layout='fill'
 							className='object-contain'
+							alt={person.name}
 						/>
 					</div>
 				}

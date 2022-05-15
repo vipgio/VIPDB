@@ -12,7 +12,6 @@ const TitleSliderCard = ({ item, type }) => {
 				setIsFetching(true);
 				const data = await fetch(`/api/tv/${item.id}`);
 				const show = await data.json();
-				// console.log(show);
 				setTvDetails({
 					dateFormat: show.last_air_date
 						? show.first_air_date.slice(0, 4) === show.last_air_date.slice(0, 4)
@@ -44,7 +43,12 @@ const TitleSliderCard = ({ item, type }) => {
 							width={600}
 							height={900}
 							placeholder='blur'
-							blurDataURL={`https://www.themoviedb.org/t/p/w94_and_h141_bestv2${item.poster_path}`}
+							blurDataURL={
+								item.poster_path
+									? `https://www.themoviedb.org/t/p/w94_and_h141_bestv2${item.poster_path}`
+									: blankImage
+							}
+							alt={item.title || item.name}
 						/>
 					}
 				/>

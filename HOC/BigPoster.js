@@ -32,7 +32,9 @@ const BigPoster = ({ path, titleName }) => {
 					src={
 						path ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${path}` : blankImage
 					}
-					blurDataURL={`https://image.tmdb.org/t/p/w94_and_h141_bestv2${path}`}
+					blurDataURL={
+						"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkrAcAAIcAgit25/8AAAAASUVORK5CYII="
+					}
 				/>
 			</div>
 			<Transition appear show={isOpen} as={Fragment}>

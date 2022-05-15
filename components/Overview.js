@@ -28,8 +28,12 @@ const Overview = ({ currentTitle }) => {
 									<>
 										<span className='ml-3'>&#8226;</span>
 										<span className='ml-4'>
-											{(currentTitle.runtime / 60).toFixed(0)}h{" "}
-											{currentTitle.runtime % 60}m
+											{currentTitle.runtime > 60 && (
+												<>{(currentTitle.runtime / 60).toFixed(0)}h </>
+											)}
+											{currentTitle.runtime % 60 !== 0 && (
+												<>{currentTitle.runtime % 60}m</>
+											)}
 										</span>
 									</>
 								)}

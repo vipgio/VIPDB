@@ -13,23 +13,13 @@ const UserContextProvider = (props) => {
 
 	useEffect(() => {
 		const user = localStorage.getItem("user");
-		// console.log(user ? JSON.parse(user) : null);
 		setCurrentUser(user ? JSON.parse(user) : null);
 	}, []);
-	// useEffect(() => {}, []);
-	// const loadingValue = () => {
-	// 	if (typeof window !== "undefined") {
-	// 		const user = localStorage.getItem("user");
-	// 		return user ? JSON.parse(user) : {};
-	// 	}
-	// };
 
-	// const [currentUser, setCurrentUser] = useState(loadingValue);
 	const getUser = async () => {
 		const user = await supabase.auth.user();
 		setCurrentUser(user);
 		localStorage.setItem("user", JSON.stringify(user));
-		console.log(user);
 	};
 
 	const handleLogin = async (email, password) => {
@@ -57,7 +47,6 @@ const UserContextProvider = (props) => {
 	const handleSignUp = async (email, password, closeModal) => {
 		try {
 			setLoading(true);
-			console.log(email, password);
 			const { user, session, error } = await supabase.auth.signUp(
 				{ email: email, password: password },
 				{
@@ -70,7 +59,6 @@ const UserContextProvider = (props) => {
 					},
 				}
 			);
-			console.log(user, session, error);
 			if (error) throw error;
 			if (!error) {
 				alert("User created successfully");
@@ -89,7 +77,6 @@ const UserContextProvider = (props) => {
 		try {
 			setLoading(true);
 			let { data, error } = await supabase.auth.api.resetPasswordForEmail(email);
-			console.log(data);
 			if (error) throw error;
 			if (!error) {
 				alert("Password reset email sent");
@@ -121,41 +108,11 @@ const UserContextProvider = (props) => {
 			const { user, error } = await supabase.auth.update({
 				data: data,
 			});
-			// console.log(user);
 			getUser();
 		} catch (err) {
 			console.log(err);
 		}
 	};
-
-	const getSession = () => {
-		console.log(supabase.auth.session());
-	};
-
-	const clearData = async () => {
-		try {
-			const { user, error } = await supabase.auth.update({
-				data: {
-					seen: [],
-					liked: [],
-					ratings: [],
-					reviews: [],
-					watchlist: [],
-				},
-			});
-			getUser();
-		} catch (err) {
-			console.log(err);
-		}
-	};
-	// const loadingValue = () => {
-	// 	const defTasks = localStorage.getItem("localSession");
-	// 	return defTasks ? JSON.parse(defTasks) : [];
-	// };
-
-	// useEffect(() => {
-	// 	localStorage.setItem("localSession", JSON.stringify(tasks));
-	// }, [currentUser]);
 	return (
 		<UserContext.Provider
 			value={{
@@ -167,8 +124,6 @@ const UserContextProvider = (props) => {
 				handleLogout,
 				recovery,
 				addData,
-				getSession,
-				clearData,
 				loading,
 				setModalType,
 				modalType,

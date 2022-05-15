@@ -31,7 +31,6 @@ const Person = () => {
 				try {
 					const data = await axios.request(options);
 					setCurrentPerson(data.data);
-					console.log(data.data);
 				} catch (error) {
 					console.log(error);
 					setIs404(true);

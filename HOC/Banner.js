@@ -15,8 +15,16 @@ const Banner = ({ path }) => {
 						width={1920}
 						height={1080}
 						placeholder='blur'
-						blurDataURL={`https://image.tmdb.org/t/p/w780${path}`}
-						src={`https://image.tmdb.org/t/p/w1280${path}`}
+						blurDataURL={
+							path
+								? `https://image.tmdb.org/t/p/w780${path}`
+								: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkrAcAAIcAgit25/8AAAAASUVORK5CYII="
+						}
+						src={
+							path
+								? `https://image.tmdb.org/t/p/w1280${path}`
+								: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkrAcAAIcAgit25/8AAAAASUVORK5CYII="
+						}
 					/>
 				</div>
 			</div>

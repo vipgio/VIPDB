@@ -9,7 +9,6 @@ const DetailsBox = () => {
 	const copyToClipboard = (copyMe) => {
 		inputRef.current.select();
 		navigator.clipboard.writeText(copyMe);
-		console.log("copied");
 	};
 	const inputRef = useRef(null);
 	return (
@@ -41,7 +40,6 @@ const DetailsBox = () => {
 							className='m-2 ml-auto h-8 w-8 cursor-pointer rounded-r-md bg-slate-700 p-1 text-slate-200 shadow-lg focus-within:bg-red-800 hover:bg-slate-600'
 							onClick={() => {
 								copyToClipboard(server + asPath);
-								console.log(window);
 							}}
 						/>
 					)}

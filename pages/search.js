@@ -32,7 +32,6 @@ const Search = () => {
 	};
 
 	const search = (query) => {
-		// console.log(query);
 		if (query && !/^\s*$/.test(query)) {
 			setIsSearching(true);
 			const options = {

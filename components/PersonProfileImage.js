@@ -24,6 +24,7 @@ export const PersonProfileImage = ({ person }) => {
 						width={60}
 						height={90}
 						className='object-contain'
+						alt={person.name}
 					/>
 				</a>
 			</Link>

@@ -14,7 +14,7 @@ export const Navbar = () => {
 			<div className='my-2 border-r pr-4'>
 				<Link href='/'>
 					<a>
-						<Image src={logo} width={30} height={30} />
+						<Image src={logo} width={30} height={30} alt='logo' />
 					</a>
 				</Link>
 			</div>

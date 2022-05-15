@@ -31,7 +31,7 @@ const Trailer = ({ trailer }) => {
 							<div className='z-20 mx-auto w-full'>
 								<div className='flex cursor-auto rounded-t-md bg-slate-600'>
 									<div className='z-10 ml-auto flex aspect-square w-[5%] overflow-hidden rounded-tr-md bg-sky-600 focus-within:ring focus-within:ring-sky-400 focus:ring focus:ring-red-600'>
-										<Popover.Button onClick={() => console.log("button")}>
+										<Popover.Button>
 											<IoCloseOutline
 												className='h-full w-full'
 												size={30}

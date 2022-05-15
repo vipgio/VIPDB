@@ -18,7 +18,6 @@ const SearchBox = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(searchRes);
 		router.push({
 			pathname: "/search",
 			query: { q: `${searchQuery}` },

@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 export const LinkHandler = ({ type, id, name, style, func, component }) => {
-	// console.log(type, id, name)
 	return (
 		<Link
 			href={`/${type}/${id ? `${id}-` : ""}${name

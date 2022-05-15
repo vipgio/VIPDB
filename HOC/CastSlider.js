@@ -4,7 +4,6 @@ import CastSliderCard from "../components/CastSliderCard";
 
 const CastSlider = ({ cast }) => {
 	const { asPath } = useRouter();
-	// console.log(cast);
 	return (
 		<>
 			<div className='m-1 my-4 mb-10 flex h-fit snap-x snap-mandatory overflow-y-auto rounded-xl border-2 border-slate-400 bg-slate-800 p-4 md:w-[780px]'>
