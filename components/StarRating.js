@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
 import { IoStarHalfOutline, IoStarOutline, IoStar, IoStarHalf } from "react-icons/io5";
-import Rating from "react-rating";
 const StarRating = () => {
 	const [rating, setRating] = useState(2.4);
 	return (
